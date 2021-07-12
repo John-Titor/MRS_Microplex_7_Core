@@ -31,7 +31,7 @@ app_main()
 
     // Fix CAN config and hook up printf.
     // XXX TODO can / should we just use the bootloader CAN config as-is?
-    //can_reinit();
+    can_reinit();
     print("start");
 
     // main loop
@@ -39,8 +39,7 @@ app_main()
         (void)WDog1_Clear();                            // must be reset every 1s
 
         // Run the CAN listener thread and any message-reception callouts
-        //can_listen(&pt_can_listener);
-
+        can_listen(&pt_can_listener);
     }
 }
 

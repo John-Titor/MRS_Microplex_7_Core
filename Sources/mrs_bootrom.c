@@ -17,6 +17,8 @@
 #include "mrs_bootrom.h"
 #include "lib.h"
 
+#define	MRS_PARAM_BASE    (IEE1_AREA_START + 2)
+
 static bool     mrs_module_selected = FALSE;
 
 static void     mrs_param_copy_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *dst);
@@ -33,10 +35,10 @@ _mrs_can_try_bitrate(uint8_t addr)
     uint8_t rate_code;
     uint8_t check_code;
 
-    IEE1_GetByte(addr + 2, &check_code);
-    IEE1_GetByte(addr + 3, &rate_code);
+    (void)IEE1_GetByte(MRS_PARAM_BASE + addr, &check_code);
+    (void)IEE1_GetByte(MRS_PARAM_BASE + addr + 1, &rate_code);
 
-    if (~rate_code == check_code) {
+    if ((rate_code ^ check_code) == 0xff) {
         return rate_code;
     }
     return 0;
@@ -99,10 +101,10 @@ mrs_scan(can_buf_t *buf)
     mrs_param_copy_bytes(MRS_PARAM_ADDR_SERIAL, 4, &data[1]);
     mrs_param_copy_bytes(MRS_PARAM_ADDR_PGM_STATE, 1, &data[5]);
     mrs_param_copy_bytes(MRS_PARAM_ADDR_BL_VERS, 1, &data[7]);
-    CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
-                      DATA_FRAME,
-                      sizeof(data),
-                      &data[0]);
+    (void)CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
+                            DATA_FRAME,
+                            sizeof(data),
+                            &data[0]);
 
     mrs_module_selected = FALSE;
 }
@@ -120,10 +122,10 @@ mrs_enter_program(can_buf_t *buf)
 
     /* send the 'will reset' message */
     mrs_param_copy_bytes(MRS_PARAM_ADDR_SERIAL, 4, &data[2]);
-    CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
-                      DATA_FRAME,
-                      sizeof(data),
-                      &data[0]);
+    (void)CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
+                            DATA_FRAME,
+                            sizeof(data),
+                            &data[0]);
 
     /* XXX wait / check for tx complete */
 
@@ -145,10 +147,10 @@ mrs_select(can_buf_t *buf)
     /* send the 'selected' response */
     mrs_param_copy_bytes(MRS_PARAM_ADDR_SERIAL, 4, &data[2]);
     mrs_param_copy_bytes(MRS_PARAM_ADDR_BL_VERS, 1, &data[7]);
-    CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
-                      DATA_FRAME,
-                      sizeof(data),
-                      &data[0]);
+    (void)CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
+                            DATA_FRAME,
+                            sizeof(data),
+                            &data[0]);
 
     mrs_module_selected = TRUE;
 }
@@ -167,29 +169,27 @@ mrs_read_eeprom(can_buf_t *buf)
 
     /* ignore high parameter address byte, it's always zero */
     mrs_param_copy_bytes(param_offset, param_len, &data[0]);
-    CAN1_SendFrameExt(MRS_DATA_ID | CAN_EXTENDED_FRAME_ID,
-                      DATA_FRAME,
-                      param_len,
-                      &data[0]);
+    (void)CAN1_SendFrameExt(MRS_DATA_ID | CAN_EXTENDED_FRAME_ID,
+                            DATA_FRAME,
+                            param_len,
+                            &data[0]);
 }
 
 static void
 mrs_param_copy_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *dst)
 {
-    param_offset += 2;        /* parameters start at offset 2 in EEPROM */
     while (param_len--) {
-        IEE1_GetByte(param_offset++, dst++);
+        (void)IEE1_GetByte(MRS_PARAM_BASE + param_offset++, dst++);
     }
 }
 
 static bool
 mrs_param_compare_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *ref)
 {
-    uint8_t v;
-
-    param_offset += 2;        /* parameters start at offset 2 in EEPROM */
     while (param_len--) {
-        IEE1_GetByte(param_offset++, &v);
+        uint8_t v;
+
+        (void)IEE1_GetByte(MRS_PARAM_BASE + param_offset++, &v);
         if (v != *ref++) {
             return FALSE;
         }

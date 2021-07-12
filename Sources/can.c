@@ -100,7 +100,7 @@ can_reinit(void)
      */
 
     /* clear INITRQ and wait for it to be acknowledged */
-    CANCTL0 &= ~CANCTL0_INITRQ_MASK;
+    CANCTL0 ^= CANCTL0_INITRQ_MASK;
     while (CANCTL1 & CANCTL1_INITAK_MASK) {
     }
     CANRFLG |= 0xFE;                     /* Reset error flags */
