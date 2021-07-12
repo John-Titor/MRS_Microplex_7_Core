@@ -7,15 +7,16 @@
 
 #include "can.h"
 
+#define MRS_SCAN_RSP_ID     0x1ffffff0
 #define MRS_FLASHER_ID      0x1ffffff1
 #define MRS_RESPONSE_ID     0x1ffffff2
 #define MRS_DATA_ID         0x1ffffff4
 
-#define MRS_PARAM_ADDR_SERIAL       2
-#define MRS_PARAM_ADDR_BL_VERS      83
-#define MRS_PARAM_ADDR_PGM_STATE    85
-#define MRS_PARAM_CAN_RATE_1        91
-#define MRS_PARAM_CAN_RATE_2        93
+#define MRS_PARAM_ADDR_SERIAL       4
+#define MRS_PARAM_ADDR_BL_VERS      85
+#define MRS_PARAM_ADDR_PGM_STATE    87
+#define MRS_PARAM_CAN_RATE_1        93
+#define MRS_PARAM_CAN_RATE_2        95
 
 typedef enum {
     MRS_CAN_1000KBPS    = 1,
@@ -33,6 +34,6 @@ extern mrs_can_rate_t   mrs_can_bitrate(void);
 /**
  * MRS CAN flash protocol handler.
  */
-extern void             mrs_flash_rx(can_buf_t *buf);
+extern void             mrs_bootrom_rx(can_buf_t *buf);
 
 #endif /* MRS_BOOTROM_H_ */

@@ -101,7 +101,7 @@
     </GenFiles>
     <SignalListFile>Documentation\Microplex_7X_core_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>MetrowerksHCS08CC</DestinationCompiler>
-    <ProjectModificationStamp>29</ProjectModificationStamp>
+    <ProjectModificationStamp>30</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -1678,8 +1678,8 @@
     <GenComponentVersion>02.366</GenComponentVersion>
     <GenDriverVersion>01.07</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1391163822</HeaderAge>
-    <CodeAge>1391163822</CodeAge>
+    <HeaderAge>1391170716</HeaderAge>
+    <CodeAge>1391170716</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>25</GenNumMethods>
     <Enable>false</Enable>
@@ -1695,7 +1695,7 @@
     <GetTransmitErrorCounter>false</GetTransmitErrorCounter>
     <GetReceiverErrorCounter>false</GetReceiverErrorCounter>
     <ReadFrame>true</ReadFrame>
-    <GetStateTX>false</GetStateTX>
+    <GetStateTX>true</GetStateTX>
     <GetStateRX>false</GetStateRX>
     <GetError>false</GetError>
     <SetSleepRequest>false</SetSleepRequest>
@@ -1747,118 +1747,132 @@
     <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
     <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
     <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
-    <GenMethodPos>16</GenMethodPos>
+    <GenMethodPos>18</GenMethodPos>
     <MethodPos>
       <MethodPos0>SendFrameExt</MethodPos0>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>170</LineBeg>
-      <LineEnd>207</LineEnd>
+      <LineBeg>171</LineBeg>
+      <LineEnd>208</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos1>DisableEvent</MethodPos1>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>208</LineBeg>
-      <LineEnd>224</LineEnd>
+      <LineBeg>209</LineBeg>
+      <LineEnd>225</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos2>EnableEvent</MethodPos2>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>225</LineBeg>
-      <LineEnd>242</LineEnd>
+      <LineBeg>226</LineBeg>
+      <LineEnd>243</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos3>SendFrame</MethodPos3>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>243</LineBeg>
-      <LineEnd>283</LineEnd>
+      <LineBeg>244</LineBeg>
+      <LineEnd>284</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos4>ReadFrame</MethodPos4>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>284</LineBeg>
-      <LineEnd>320</LineEnd>
+      <LineBeg>285</LineBeg>
+      <LineEnd>321</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos5>Init</MethodPos5>
       <MethodType>internal_method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>321</LineBeg>
-      <LineEnd>333</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos6>InterruptRx</MethodPos6>
-      <MethodType>internal_method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>334</LineBeg>
-      <LineEnd>345</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos7>InterruptError</MethodPos7>
-      <MethodType>internal_method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>346</LineBeg>
-      <LineEnd>357</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos8>DisableEvent</MethodPos8>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>180</LineBeg>
-      <LineEnd>200</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos9>EnableEvent</MethodPos9>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>201</LineBeg>
-      <LineEnd>221</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos10>SendFrame</MethodPos10>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>222</LineBeg>
-      <LineEnd>321</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos11>SendFrameExt</MethodPos11>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
       <LineBeg>322</LineBeg>
-      <LineEnd>417</LineEnd>
+      <LineEnd>334</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos12>ReadFrame</MethodPos12>
+      <MethodPos6>GetStateTX</MethodPos6>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>335</LineBeg>
+      <LineEnd>347</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos7>InterruptRx</MethodPos7>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>348</LineBeg>
+      <LineEnd>359</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos8>InterruptError</MethodPos8>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>360</LineBeg>
+      <LineEnd>371</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos9>DisableEvent</MethodPos9>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>418</LineBeg>
-      <LineEnd>493</LineEnd>
+      <LineBeg>181</LineBeg>
+      <LineEnd>201</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos13>Init</MethodPos13>
+      <MethodPos10>EnableEvent</MethodPos10>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>202</LineBeg>
+      <LineEnd>222</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos11>SendFrame</MethodPos11>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>223</LineBeg>
+      <LineEnd>322</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos12>SendFrameExt</MethodPos12>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>323</LineBeg>
+      <LineEnd>418</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos13>ReadFrame</MethodPos13>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>419</LineBeg>
+      <LineEnd>494</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos14>Init</MethodPos14>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>494</LineBeg>
-      <LineEnd>541</LineEnd>
+      <LineBeg>495</LineBeg>
+      <LineEnd>542</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos14>InterruptRx</MethodPos14>
-      <MethodType>internal_method</MethodType>
+      <MethodPos15>GetStateTX</MethodPos15>
+      <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
       <LineBeg>543</LineBeg>
-      <LineEnd>565</LineEnd>
+      <LineEnd>559</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos15>InterruptError</MethodPos15>
+      <MethodPos16>InterruptRx</MethodPos16>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>566</LineBeg>
-      <LineEnd>581</LineEnd>
+      <LineBeg>561</LineBeg>
+      <LineEnd>583</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos17>InterruptError</MethodPos17>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>584</LineBeg>
+      <LineEnd>599</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
   </ComponentID_45>
@@ -2032,134 +2046,135 @@
     <SrcFile10>Drivers\Common\TimerIntSettings.inc=1116866294</SrcFile10>
     <SrcFile11>Drivers\Common\WatchDogAbstract.inc=1116866294</SrcFile11>
     <SrcFile12>Drivers\HCS08\TimerSubroutines_EnDisEvent.prg=1116866294</SrcFile12>
-    <SrcFile13>Drivers\HCS08\TimerSubroutines_TmrAsSharedPresc.prg=1116866294</SrcFile13>
-    <SrcFile14>Drivers\HCS08\IntEEPROM_DZ.drv=1122284138</SrcFile14>
-    <SrcFile15>Drivers\Common\FreescaleCANAbstract.inc=1116866294</SrcFile15>
-    <SrcFile16>Drivers\Common\GenWatchDogResetCode.prg=1121555243</SrcFile16>
-    <SrcFile17>Drivers\Common\GeneralParametersNone.inc=1116866294</SrcFile17>
-    <SrcFile18>Drivers\Common\FreescaleCANSettings.inc=1116866294</SrcFile18>
-    <SrcFile19>Drivers\Common\FreescaleCANDisableEvent.inc=1116866294</SrcFile19>
-    <SrcFile20>Drivers\HCS08\IO_Map.drv=1116866294</SrcFile20>
-    <SrcFile21>Drivers\Common\ADCMeasure.inc=1146382935</SrcFile21>
-    <SrcFile22>Drivers\Common\GeneralSetDir.inc=1116866294</SrcFile22>
-    <SrcFile23>Drivers\HCS08\MC9S08_Constants.prg=1116866294</SrcFile23>
-    <SrcFile24>Drivers\HCS08\PE_Error.drv=1146382935</SrcFile24>
-    <SrcFile25>Drivers\Common\GeneralInternalGlobal.inc=1116866294</SrcFile25>
-    <SrcFile26>Drivers\Common\PE_MisraEnableRules.prg=1116866294</SrcFile26>
-    <SrcFile27>Drivers\Common\CommonRegInitialization_Flash.prg=1116866294</SrcFile27>
-    <SrcFile28>Drivers\Common\GeneralInternalDescription.prg=1116866294</SrcFile28>
-    <SrcFile29>Drivers\Common\CommonInitializationSequenceNames.inc=1116866294</SrcFile29>
-    <SrcFile30>Drivers\HCS08\Init_PORT_HCS08.prg=1127381294</SrcFile30>
-    <SrcFile31>Drivers\Common\CommonRegInit_WriteOnce.prg=1116866294</SrcFile31>
-    <SrcFile32>Drivers\Common\GeneralParameters.inc=1116866294</SrcFile32>
-    <SrcFile33>Drivers\TimerInt.src=1122284138</SrcFile33>
-    <SrcFile34>Drivers\HCS08\BitIO.drv=1123253332</SrcFile34>
-    <SrcFile35>Drivers\HCS08\TimerSubroutines_All.prg=1116866294</SrcFile35>
-    <SrcFile36>Drivers\Common\FreescaleCANSendFrame.inc=1116866294</SrcFile36>
-    <SrcFile37>Drivers\Common\GenReg8BitsInitInfo.prg=1181763784</SrcFile37>
-    <SrcFile38>Drivers\HCS08.src=1116866294</SrcFile38>
-    <SrcFile39>Drivers\BitIO.src=1122284138</SrcFile39>
-    <SrcFile40>Drivers\HC08\Common_HCx08\MC9x08_COPreset.prg=1116866294</SrcFile40>
-    <SrcFile41>Drivers\HC08\Common_HCx08\MC9x08_LinkerPRM.prg=1122284138</SrcFile41>
-    <SrcFile42>Drivers\Common\SetReg8_Rst.prg=1116866294</SrcFile42>
-    <SrcFile43>Drivers\Common\OneBitIOAbstract.inc=1116866294</SrcFile43>
-    <SrcFile44>Drivers\ADC.src=1122284138</SrcFile44>
-    <SrcFile45>Drivers\HCS08\ADC.drv=1116866294</SrcFile45>
-    <SrcFile46>Drivers\Common\EBGNSupport\StringLib.prg=1146382935</SrcFile46>
-    <SrcFile47>Drivers\HCS08\MC9S08_LowLevelInit.prg=1116866294</SrcFile47>
-    <SrcFile48>Drivers\Common\GeneralDamage.inc=1116866294</SrcFile48>
-    <SrcFile49>Drivers\HCS08\MC9S08_DefineCommonSymbols.prg=1116866294</SrcFile49>
-    <SrcFile50>Drivers\HCS08\PE_Types.drv=1121555243</SrcFile50>
-    <SrcFile51>Drivers\Common\CommonInitialization_WriteOnce.prg=1116866294</SrcFile51>
-    <SrcFile52>Drivers\Common\OneBitIOClrVal.inc=1116866294</SrcFile52>
-    <SrcFile53>Drivers\HCS08\MC9S08.drv=1146382935</SrcFile53>
-    <SrcFile54>Drivers\Common\IntEEPROMSetLong.inc=1116866294</SrcFile54>
-    <SrcFile55>Drivers\Common\ADCGetValue.inc=1146382935</SrcFile55>
-    <SrcFile56>Drivers\Common\PE_MisraDisableRules.prg=1116866294</SrcFile56>
-    <SrcFile57>Drivers\Common\GenReg8InitInfo.prg=1116866294</SrcFile57>
-    <SrcFile58>Drivers\Common\HeaderGeneral.c=1181763784</SrcFile58>
-    <SrcFile59>Drivers\Common\SetRegBits8_Rst.prg=1116866294</SrcFile59>
-    <SrcFile60>Drivers\HCS08\MC9S08_MCS_V1.prg=1116866294</SrcFile60>
-    <SrcFile61>Drivers\Common\UsedPin.inc=1116866294</SrcFile61>
-    <SrcFile62>Drivers\Common\DefineISR.prg=1120303303</SrcFile62>
-    <SrcFile63>Drivers\HCS08\MC9S08_EntryPointCode.prg=1116866294</SrcFile63>
-    <SrcFile64>Drivers\HCS08\MC9S08_InterruptVectorTableROM.prg=1116866294</SrcFile64>
-    <SrcFile65>Drivers\HCS08\IntEEPROM.drv=1116866294</SrcFile65>
-    <SrcFile66>Drivers\Common\PE_ConstSettings.inc=1116866294</SrcFile66>
-    <SrcFile67>Drivers\Common\OneBitIOSetVal.inc=1116866294</SrcFile67>
-    <SrcFile68>Drivers\HCS08\PE_Const.drv=1116866294</SrcFile68>
-    <SrcFile69>Drivers\Common\PE_ErrorAbstract.inc=1116866294</SrcFile69>
-    <SrcFile70>Drivers\Common\IntEEPROMSettings.inc=1116866294</SrcFile70>
-    <SrcFile71>Drivers\Common\InitReg8.prg=1116866294</SrcFile71>
-    <SrcFile72>Drivers\Common\CommonInitialization.prg=1116866294</SrcFile72>
-    <SrcFile73>Drivers\Common\MC9S08GetResetSource.inc=1116866294</SrcFile73>
-    <SrcFile74>Drivers\Common\GeneralEvent.inc=1116866294</SrcFile74>
-    <SrcFile75>Drivers\HCS08\CreateDataSection.prg=1116866294</SrcFile75>
-    <SrcFile76>Drivers\Common\CommonRegInitialization.prg=1116866294</SrcFile76>
-    <SrcFile77>Drivers\Common\SetReg8.prg=1127381294</SrcFile77>
-    <SrcFile78>Drivers\HCS08\TimerSubroutines.prg=1116866294</SrcFile78>
-    <SrcFile79>Drivers\Common\WatchDogClear.inc=1116866294</SrcFile79>
-    <SrcFile80>Drivers\Common\OneBitIOGetVal.inc=1116866294</SrcFile80>
-    <SrcFile81>Drivers\HCS08\MC9S08DZ60_64c.prg=1116866294</SrcFile81>
-    <SrcFile82>Drivers\HCS08\FreescaleCAN.drv=1116866294</SrcFile82>
-    <SrcFile83>Drivers\Common\FreescaleCANSendFrameExt.inc=1116866294</SrcFile83>
-    <SrcFile84>Drivers\Common\IntEEPROMSetWord.inc=1116866294</SrcFile84>
-    <SrcFile85>Drivers\HC08\Common_HCx08\CommonSubroutines.prg=1116866294</SrcFile85>
-    <SrcFile86>Drivers\HCS08\TimerInt.drv=1128496915</SrcFile86>
-    <SrcFile87>Drivers\Common\Header.end=1116866294</SrcFile87>
-    <SrcFile88>Drivers\Common\OneBitIOPutVal.inc=1116866294</SrcFile88>
-    <SrcFile89>Drivers\Common\ADCSettings.inc=1151164690</SrcFile89>
-    <SrcFile90>Drivers\IntEEPROM.src=1122284138</SrcFile90>
-    <SrcFile91>Drivers\HCS08\MC9S08_SharedInterruptVectors.prg=1116866294</SrcFile91>
-    <SrcFile92>Drivers\Common\CommonRegInit.prg=1116866294</SrcFile92>
-    <SrcFile93>Drivers\Common\Header.doxy=1119170811</SrcFile93>
-    <SrcFile94>Drivers\HCS08\TimerSubroutines_PeriodicInt.prg=1179222922</SrcFile94>
-    <SrcFile95>Beans\IntEEPROM\clock.prg=1116866294</SrcFile95>
-    <SrcFile96>Drivers\Common\FreescaleCANEnableEvent.inc=1116866294</SrcFile96>
-    <SrcFile97>Drivers\Common\PE_TypesAbstract.inc=1116866294</SrcFile97>
-    <SrcFile98>Drivers\HC08\Common_HCx08\MC9x08_WhileSet.prg=1116866294</SrcFile98>
-    <SrcFile99>Drivers\Common\IO_MapAbstract.inc=1116866294</SrcFile99>
-    <SrcFile100>Drivers\Common\ToolChain_Settings.prg=1181763784</SrcFile100>
-    <SrcFile101>Drivers\Common\MC9S08Abstract.inc=1116866294</SrcFile101>
-    <SrcFile102>Drivers\Common\FreescaleCANOnFullRxBuffer.inc=1116866294</SrcFile102>
-    <SrcFile103>Drivers\Common\MC9S08DisableInt.inc=1116866294</SrcFile103>
-    <SrcFile104>Drivers\WatchDog.src=1181763784</SrcFile104>
-    <SrcFile105>Drivers\HCS08\MC9S08DZ60_64h.prg=1116866294</SrcFile105>
-    <SrcFile106>Drivers\HC08\Common_HCx08\MC9x08_LinkerPRM_subroutines.prg=1116866294</SrcFile106>
-    <SrcFile107>Drivers\HC08\Common_HCx08\MC9x08_WhileNotSet.prg=1116866294</SrcFile107>
-    <SrcFile108>Drivers\Common\TimerIntOnInterrupt.inc=1116866294</SrcFile108>
-    <SrcFile109>Drivers\Common\GeneralInternal.inc=1116866294</SrcFile109>
-    <SrcFile110>Drivers\Common\ADCAbstract.inc=1116866294</SrcFile110>
-    <SrcFile111>Drivers\HCS08\IntFLASH_SubRoutines.prg=1116866294</SrcFile111>
-    <SrcFile112>Drivers\HCS08\ADC_shared.drv=1116866294</SrcFile112>
-    <SrcFile113>Drivers\Common\MC9S08EnableInt.inc=1116866294</SrcFile113>
-    <SrcFile114>Drivers\HCS08\InternalPeripherals_IO.prg=1116866294</SrcFile114>
-    <SrcFile115>Drivers\Common\Header.c=1181763784</SrcFile115>
-    <SrcFile116>Drivers\Common\Header.h=1181763784</SrcFile116>
-    <SrcFile117>Drivers\Common\InitReg8Speed.prg=1116866294</SrcFile117>
-    <SrcFile118>Drivers\Common\OneBitIOSettings.inc=1116866294</SrcFile118>
-    <SrcFile119>Drivers\HCS08\WatchDog.drv=1121604292</SrcFile119>
-    <SrcFile120>Drivers\Common\CommonEnabling.prg=1116866294</SrcFile120>
-    <SrcFile121>Drivers\Common\Doxy_CollectRegInitInfo.prg=1181763784</SrcFile121>
-    <SrcFile122>Drivers\Common\SetRegBits8.prg=1127381294</SrcFile122>
-    <SrcFile123>Drivers\Common\InitReg8Block.prg=1116866294</SrcFile123>
-    <SrcFile124>Drivers\Common\WatchDogSettings.inc=1116866294</SrcFile124>
-    <SrcFile125>Drivers\Common\DeclareISR.prg=1146382935</SrcFile125>
-    <SrcFile126>Drivers\Common\ErrorDefinitions.inc=1116866294</SrcFile126>
-    <SrcFile127>Drivers\HCS08\CreateCodeSection.prg=1116866294</SrcFile127>
-    <SrcFile128>Drivers\FreescaleCAN.src=1122284138</SrcFile128>
-    <SrcFile129>Drivers\Common\IO_MapSettings.inc=1116866294</SrcFile129>
-    <SrcFile130>Drivers\HC08\Common_HCx08\MC9x08_WhileNotValue.prg=1116866294</SrcFile130>
-    <SrcFile131>Drivers\Common\PE_ConstAbstract.inc=1116866294</SrcFile131>
-    <SrcFile132>Drivers\Common\Header.C=1181763784</SrcFile132>
-    <SrcFile133>Drivers\Common\TimerIntAbstract.inc=1116866294</SrcFile133>
-    <SrcFile134>Drivers\Common\IntEEPROMGetByte.inc=1116866294</SrcFile134>
-    <SrcFile135>Drivers\Common\GeneralMethod.inc=1116866294</SrcFile135>
-    <SrcFile136>Drivers\Common\PE_MisraRuleToErrorCode.prg=1127381294</SrcFile136>
-    <SrcFile137>Drivers\Common\GeneralReturnNothing.inc=1116866294</SrcFile137>
-    <SrcFile138>Drivers\Common\CommonInitialization_FLASH.prg=1116866294</SrcFile138>
-    <SrcFile139>Drivers\Common\HeaderCopyright.inc=1146382935</SrcFile139>
-    <SrcFile140>Drivers\HCS08\CreateIntSection.prg=1116866294</SrcFile140>
-    <SrcFile141>Drivers\Common\OneBitIOSetDir.inc=1116866294</SrcFile141>
+    <SrcFile13>Drivers\Common\FreescaleCANGetStateTX.inc=1116866294</SrcFile13>
+    <SrcFile14>Drivers\HCS08\TimerSubroutines_TmrAsSharedPresc.prg=1116866294</SrcFile14>
+    <SrcFile15>Drivers\HCS08\IntEEPROM_DZ.drv=1122284138</SrcFile15>
+    <SrcFile16>Drivers\Common\FreescaleCANAbstract.inc=1116866294</SrcFile16>
+    <SrcFile17>Drivers\Common\GenWatchDogResetCode.prg=1121555243</SrcFile17>
+    <SrcFile18>Drivers\Common\GeneralParametersNone.inc=1116866294</SrcFile18>
+    <SrcFile19>Drivers\Common\FreescaleCANSettings.inc=1116866294</SrcFile19>
+    <SrcFile20>Drivers\Common\FreescaleCANDisableEvent.inc=1116866294</SrcFile20>
+    <SrcFile21>Drivers\HCS08\IO_Map.drv=1116866294</SrcFile21>
+    <SrcFile22>Drivers\Common\ADCMeasure.inc=1146382935</SrcFile22>
+    <SrcFile23>Drivers\Common\GeneralSetDir.inc=1116866294</SrcFile23>
+    <SrcFile24>Drivers\HCS08\MC9S08_Constants.prg=1116866294</SrcFile24>
+    <SrcFile25>Drivers\HCS08\PE_Error.drv=1146382935</SrcFile25>
+    <SrcFile26>Drivers\Common\GeneralInternalGlobal.inc=1116866294</SrcFile26>
+    <SrcFile27>Drivers\Common\PE_MisraEnableRules.prg=1116866294</SrcFile27>
+    <SrcFile28>Drivers\Common\CommonRegInitialization_Flash.prg=1116866294</SrcFile28>
+    <SrcFile29>Drivers\Common\GeneralInternalDescription.prg=1116866294</SrcFile29>
+    <SrcFile30>Drivers\Common\CommonInitializationSequenceNames.inc=1116866294</SrcFile30>
+    <SrcFile31>Drivers\HCS08\Init_PORT_HCS08.prg=1127381294</SrcFile31>
+    <SrcFile32>Drivers\Common\CommonRegInit_WriteOnce.prg=1116866294</SrcFile32>
+    <SrcFile33>Drivers\Common\GeneralParameters.inc=1116866294</SrcFile33>
+    <SrcFile34>Drivers\TimerInt.src=1122284138</SrcFile34>
+    <SrcFile35>Drivers\HCS08\BitIO.drv=1123253332</SrcFile35>
+    <SrcFile36>Drivers\HCS08\TimerSubroutines_All.prg=1116866294</SrcFile36>
+    <SrcFile37>Drivers\Common\FreescaleCANSendFrame.inc=1116866294</SrcFile37>
+    <SrcFile38>Drivers\Common\GenReg8BitsInitInfo.prg=1181763784</SrcFile38>
+    <SrcFile39>Drivers\HCS08.src=1116866294</SrcFile39>
+    <SrcFile40>Drivers\BitIO.src=1122284138</SrcFile40>
+    <SrcFile41>Drivers\HC08\Common_HCx08\MC9x08_COPreset.prg=1116866294</SrcFile41>
+    <SrcFile42>Drivers\HC08\Common_HCx08\MC9x08_LinkerPRM.prg=1122284138</SrcFile42>
+    <SrcFile43>Drivers\Common\SetReg8_Rst.prg=1116866294</SrcFile43>
+    <SrcFile44>Drivers\Common\OneBitIOAbstract.inc=1116866294</SrcFile44>
+    <SrcFile45>Drivers\ADC.src=1122284138</SrcFile45>
+    <SrcFile46>Drivers\HCS08\ADC.drv=1116866294</SrcFile46>
+    <SrcFile47>Drivers\Common\EBGNSupport\StringLib.prg=1146382935</SrcFile47>
+    <SrcFile48>Drivers\HCS08\MC9S08_LowLevelInit.prg=1116866294</SrcFile48>
+    <SrcFile49>Drivers\Common\GeneralDamage.inc=1116866294</SrcFile49>
+    <SrcFile50>Drivers\HCS08\MC9S08_DefineCommonSymbols.prg=1116866294</SrcFile50>
+    <SrcFile51>Drivers\HCS08\PE_Types.drv=1121555243</SrcFile51>
+    <SrcFile52>Drivers\Common\CommonInitialization_WriteOnce.prg=1116866294</SrcFile52>
+    <SrcFile53>Drivers\Common\OneBitIOClrVal.inc=1116866294</SrcFile53>
+    <SrcFile54>Drivers\HCS08\MC9S08.drv=1146382935</SrcFile54>
+    <SrcFile55>Drivers\Common\IntEEPROMSetLong.inc=1116866294</SrcFile55>
+    <SrcFile56>Drivers\Common\ADCGetValue.inc=1146382935</SrcFile56>
+    <SrcFile57>Drivers\Common\PE_MisraDisableRules.prg=1116866294</SrcFile57>
+    <SrcFile58>Drivers\Common\GenReg8InitInfo.prg=1116866294</SrcFile58>
+    <SrcFile59>Drivers\Common\HeaderGeneral.c=1181763784</SrcFile59>
+    <SrcFile60>Drivers\Common\SetRegBits8_Rst.prg=1116866294</SrcFile60>
+    <SrcFile61>Drivers\HCS08\MC9S08_MCS_V1.prg=1116866294</SrcFile61>
+    <SrcFile62>Drivers\Common\UsedPin.inc=1116866294</SrcFile62>
+    <SrcFile63>Drivers\Common\DefineISR.prg=1120303303</SrcFile63>
+    <SrcFile64>Drivers\HCS08\MC9S08_EntryPointCode.prg=1116866294</SrcFile64>
+    <SrcFile65>Drivers\HCS08\MC9S08_InterruptVectorTableROM.prg=1116866294</SrcFile65>
+    <SrcFile66>Drivers\HCS08\IntEEPROM.drv=1116866294</SrcFile66>
+    <SrcFile67>Drivers\Common\PE_ConstSettings.inc=1116866294</SrcFile67>
+    <SrcFile68>Drivers\Common\OneBitIOSetVal.inc=1116866294</SrcFile68>
+    <SrcFile69>Drivers\HCS08\PE_Const.drv=1116866294</SrcFile69>
+    <SrcFile70>Drivers\Common\PE_ErrorAbstract.inc=1116866294</SrcFile70>
+    <SrcFile71>Drivers\Common\IntEEPROMSettings.inc=1116866294</SrcFile71>
+    <SrcFile72>Drivers\Common\InitReg8.prg=1116866294</SrcFile72>
+    <SrcFile73>Drivers\Common\CommonInitialization.prg=1116866294</SrcFile73>
+    <SrcFile74>Drivers\Common\MC9S08GetResetSource.inc=1116866294</SrcFile74>
+    <SrcFile75>Drivers\Common\GeneralEvent.inc=1116866294</SrcFile75>
+    <SrcFile76>Drivers\HCS08\CreateDataSection.prg=1116866294</SrcFile76>
+    <SrcFile77>Drivers\Common\CommonRegInitialization.prg=1116866294</SrcFile77>
+    <SrcFile78>Drivers\Common\SetReg8.prg=1127381294</SrcFile78>
+    <SrcFile79>Drivers\HCS08\TimerSubroutines.prg=1116866294</SrcFile79>
+    <SrcFile80>Drivers\Common\WatchDogClear.inc=1116866294</SrcFile80>
+    <SrcFile81>Drivers\Common\OneBitIOGetVal.inc=1116866294</SrcFile81>
+    <SrcFile82>Drivers\HCS08\MC9S08DZ60_64c.prg=1116866294</SrcFile82>
+    <SrcFile83>Drivers\HCS08\FreescaleCAN.drv=1116866294</SrcFile83>
+    <SrcFile84>Drivers\Common\FreescaleCANSendFrameExt.inc=1116866294</SrcFile84>
+    <SrcFile85>Drivers\Common\IntEEPROMSetWord.inc=1116866294</SrcFile85>
+    <SrcFile86>Drivers\HC08\Common_HCx08\CommonSubroutines.prg=1116866294</SrcFile86>
+    <SrcFile87>Drivers\HCS08\TimerInt.drv=1128496915</SrcFile87>
+    <SrcFile88>Drivers\Common\Header.end=1116866294</SrcFile88>
+    <SrcFile89>Drivers\Common\OneBitIOPutVal.inc=1116866294</SrcFile89>
+    <SrcFile90>Drivers\Common\ADCSettings.inc=1151164690</SrcFile90>
+    <SrcFile91>Drivers\IntEEPROM.src=1122284138</SrcFile91>
+    <SrcFile92>Drivers\HCS08\MC9S08_SharedInterruptVectors.prg=1116866294</SrcFile92>
+    <SrcFile93>Drivers\Common\CommonRegInit.prg=1116866294</SrcFile93>
+    <SrcFile94>Drivers\Common\Header.doxy=1119170811</SrcFile94>
+    <SrcFile95>Drivers\HCS08\TimerSubroutines_PeriodicInt.prg=1179222922</SrcFile95>
+    <SrcFile96>Beans\IntEEPROM\clock.prg=1116866294</SrcFile96>
+    <SrcFile97>Drivers\Common\FreescaleCANEnableEvent.inc=1116866294</SrcFile97>
+    <SrcFile98>Drivers\Common\PE_TypesAbstract.inc=1116866294</SrcFile98>
+    <SrcFile99>Drivers\HC08\Common_HCx08\MC9x08_WhileSet.prg=1116866294</SrcFile99>
+    <SrcFile100>Drivers\Common\IO_MapAbstract.inc=1116866294</SrcFile100>
+    <SrcFile101>Drivers\Common\ToolChain_Settings.prg=1181763784</SrcFile101>
+    <SrcFile102>Drivers\Common\MC9S08Abstract.inc=1116866294</SrcFile102>
+    <SrcFile103>Drivers\Common\FreescaleCANOnFullRxBuffer.inc=1116866294</SrcFile103>
+    <SrcFile104>Drivers\Common\MC9S08DisableInt.inc=1116866294</SrcFile104>
+    <SrcFile105>Drivers\WatchDog.src=1181763784</SrcFile105>
+    <SrcFile106>Drivers\HCS08\MC9S08DZ60_64h.prg=1116866294</SrcFile106>
+    <SrcFile107>Drivers\HC08\Common_HCx08\MC9x08_LinkerPRM_subroutines.prg=1116866294</SrcFile107>
+    <SrcFile108>Drivers\HC08\Common_HCx08\MC9x08_WhileNotSet.prg=1116866294</SrcFile108>
+    <SrcFile109>Drivers\Common\TimerIntOnInterrupt.inc=1116866294</SrcFile109>
+    <SrcFile110>Drivers\Common\GeneralInternal.inc=1116866294</SrcFile110>
+    <SrcFile111>Drivers\Common\ADCAbstract.inc=1116866294</SrcFile111>
+    <SrcFile112>Drivers\HCS08\IntFLASH_SubRoutines.prg=1116866294</SrcFile112>
+    <SrcFile113>Drivers\HCS08\ADC_shared.drv=1116866294</SrcFile113>
+    <SrcFile114>Drivers\Common\MC9S08EnableInt.inc=1116866294</SrcFile114>
+    <SrcFile115>Drivers\HCS08\InternalPeripherals_IO.prg=1116866294</SrcFile115>
+    <SrcFile116>Drivers\Common\Header.c=1181763784</SrcFile116>
+    <SrcFile117>Drivers\Common\Header.h=1181763784</SrcFile117>
+    <SrcFile118>Drivers\Common\InitReg8Speed.prg=1116866294</SrcFile118>
+    <SrcFile119>Drivers\Common\OneBitIOSettings.inc=1116866294</SrcFile119>
+    <SrcFile120>Drivers\HCS08\WatchDog.drv=1121604292</SrcFile120>
+    <SrcFile121>Drivers\Common\CommonEnabling.prg=1116866294</SrcFile121>
+    <SrcFile122>Drivers\Common\Doxy_CollectRegInitInfo.prg=1181763784</SrcFile122>
+    <SrcFile123>Drivers\Common\SetRegBits8.prg=1127381294</SrcFile123>
+    <SrcFile124>Drivers\Common\InitReg8Block.prg=1116866294</SrcFile124>
+    <SrcFile125>Drivers\Common\WatchDogSettings.inc=1116866294</SrcFile125>
+    <SrcFile126>Drivers\Common\DeclareISR.prg=1146382935</SrcFile126>
+    <SrcFile127>Drivers\Common\ErrorDefinitions.inc=1116866294</SrcFile127>
+    <SrcFile128>Drivers\HCS08\CreateCodeSection.prg=1116866294</SrcFile128>
+    <SrcFile129>Drivers\FreescaleCAN.src=1122284138</SrcFile129>
+    <SrcFile130>Drivers\Common\IO_MapSettings.inc=1116866294</SrcFile130>
+    <SrcFile131>Drivers\HC08\Common_HCx08\MC9x08_WhileNotValue.prg=1116866294</SrcFile131>
+    <SrcFile132>Drivers\Common\PE_ConstAbstract.inc=1116866294</SrcFile132>
+    <SrcFile133>Drivers\Common\Header.C=1181763784</SrcFile133>
+    <SrcFile134>Drivers\Common\TimerIntAbstract.inc=1116866294</SrcFile134>
+    <SrcFile135>Drivers\Common\IntEEPROMGetByte.inc=1116866294</SrcFile135>
+    <SrcFile136>Drivers\Common\GeneralMethod.inc=1116866294</SrcFile136>
+    <SrcFile137>Drivers\Common\PE_MisraRuleToErrorCode.prg=1127381294</SrcFile137>
+    <SrcFile138>Drivers\Common\GeneralReturnNothing.inc=1116866294</SrcFile138>
+    <SrcFile139>Drivers\Common\CommonInitialization_FLASH.prg=1116866294</SrcFile139>
+    <SrcFile140>Drivers\Common\HeaderCopyright.inc=1146382935</SrcFile140>
+    <SrcFile141>Drivers\HCS08\CreateIntSection.prg=1116866294</SrcFile141>
+    <SrcFile142>Drivers\Common\OneBitIOSetDir.inc=1116866294</SrcFile142>
   </UsedSrcFiles>
 </GenerationInfo_G_C>

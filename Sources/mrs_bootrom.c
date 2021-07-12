@@ -17,7 +17,7 @@
 #include "mrs_bootrom.h"
 #include "lib.h"
 
-#define	MRS_PARAM_BASE    (IEE1_AREA_START + 2)
+#define	MRS_PARAM_BASE    IEE1_AREA_START
 
 static bool     mrs_module_selected = FALSE;
 
@@ -73,22 +73,22 @@ static const struct {
 };
 
 void
-mrs_flash_rx(can_buf_t *buf)
+mrs_bootrom_rx(can_buf_t *buf)
 {
-    uint8_t i;
-
     /* messages always at least 2 long */
-    if (buf->dlc < 2) {
-        return;
-    }
+    if (buf->dlc >= 2) {
+        uint8_t i;
 
-    /* look for a handler */
-    for (i = 0; handler[i].func != 0; i++) {
-        if ((handler[i].cmd[0] == buf->data[0]) && (handler[i].cmd[1] == buf->data[1])) {
-            handler[i].func(buf);
-            break;
+        /* look for a handler */
+        for (i = 0; handler[i].func != 0; i++) {
+            can_trace(i);
+            if ((handler[i].cmd[0] == buf->data[0]) && (handler[i].cmd[1] == buf->data[1])) {
+                handler[i].func(buf);
+                return;
+            }
         }
     }
+    can_trace(TRACE_MRS_BADMSG);
 }
 
 void
@@ -97,11 +97,12 @@ mrs_scan(can_buf_t *buf)
     uint8_t data[8] = {0};
     (void)buf;
 
+    can_trace(TRACE_MRS_SCAN);
+
     /* send the scan response message */
     mrs_param_copy_bytes(MRS_PARAM_ADDR_SERIAL, 4, &data[1]);
-    mrs_param_copy_bytes(MRS_PARAM_ADDR_PGM_STATE, 1, &data[5]);
     mrs_param_copy_bytes(MRS_PARAM_ADDR_BL_VERS, 1, &data[7]);
-    (void)CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
+    (void)CAN1_SendFrameExt(MRS_SCAN_RSP_ID | CAN_EXTENDED_FRAME_ID,
                             DATA_FRAME,
                             sizeof(data),
                             &data[0]);
@@ -120,6 +121,8 @@ mrs_enter_program(can_buf_t *buf)
         return;
     }
 
+    can_trace(TRACE_MRS_PROGRAM);
+
     /* send the 'will reset' message */
     mrs_param_copy_bytes(MRS_PARAM_ADDR_SERIAL, 4, &data[2]);
     (void)CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
@@ -137,16 +140,17 @@ mrs_enter_program(can_buf_t *buf)
 void
 mrs_select(can_buf_t *buf)
 {
-    uint8_t data[8] = {0};
+    uint8_t data[8] = {0x21, 0x10};
 
     /* verify that this message is selecting this module */
     if (!mrs_param_compare_bytes(MRS_PARAM_ADDR_SERIAL, 4, &buf->data[2])) {
         return;
     }
 
+    can_trace(TRACE_MRS_SELECT);
+
     /* send the 'selected' response */
     mrs_param_copy_bytes(MRS_PARAM_ADDR_SERIAL, 4, &data[2]);
-    mrs_param_copy_bytes(MRS_PARAM_ADDR_BL_VERS, 1, &data[7]);
     (void)CAN1_SendFrameExt(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
                             DATA_FRAME,
                             sizeof(data),
@@ -166,6 +170,8 @@ mrs_read_eeprom(can_buf_t *buf)
     if (!mrs_module_selected) {
         return;
     }
+
+    can_trace(TRACE_MRS_GET_PARAM);
 
     /* ignore high parameter address byte, it's always zero */
     mrs_param_copy_bytes(param_offset, param_len, &data[0]);

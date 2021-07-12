@@ -58,7 +58,7 @@
 #include "IO_Map.h"
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
-extern void tail_module(void);
+extern void app_main(void);
 
 void main(void)
 {

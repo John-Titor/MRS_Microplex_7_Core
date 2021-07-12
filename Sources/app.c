@@ -4,7 +4,6 @@
 
 #include <CAN_EN.h>
 #include <CAN_STB_N.h>
-#include <DO_HSD_2.h>
 #include <DO_POWER.h>
 #include <WDog1.h>
 
@@ -20,7 +19,6 @@ app_main()
 {
 	// Start with a freshly-reset watchdog.
     (void)WDog1_Clear();
-    DO_HSD_2_SetVal();
 
     // Say awake even if KL15 is not present.
     DO_POWER_SetVal();
@@ -33,6 +31,7 @@ app_main()
     // XXX TODO can / should we just use the bootloader CAN config as-is?
     can_reinit();
     print("start");
+    can_trace(0xff);
 
     // main loop
     for (;;) {

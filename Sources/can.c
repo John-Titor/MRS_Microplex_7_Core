@@ -28,7 +28,7 @@ can_trace(uint8_t code)
 
     b[0] = code;
     do {
-        ret = CAN1_SendFrameExt(0x0f, DATA_FRAME, 0x1, &b[0]);
+        ret = CAN1_SendFrame(2, 0x0f, DATA_FRAME, 0x1, &b[0]);
     } while (ret != ERR_OK);
 }
 
@@ -50,6 +50,36 @@ can_putchar(char ch)
         } while (ret == ERR_TXFULL);
         len = 0;
     }
+}
+
+void
+can_tx_async(can_buf_t *buf)
+{
+    uint8_t ret;
+
+    do {
+        ret = CAN1_SendFrameExt(buf->id, DATA_FRAME, buf->dlc, &buf->data[0]);
+    } while (ret == ERR_TXFULL);    
+}
+
+void
+can_tx_ordered(can_buf_t *buf)
+{
+    uint8_t ret;
+
+    /* send explicitly using buffer 0 to ensure ordering */
+    do {
+        ret = CAN1_SendFrame(0, buf->id, DATA_FRAME, buf->dlc, &buf->data[0]);
+    } while (ret == ERR_TXFULL);    
+}
+
+void
+can_tx_blocking(can_buf_t *buf)
+{
+    can_tx_ordered(buf);
+
+    /* and wait for buffer 0 to be done */
+    while (CAN1_GetStateTX() ^ 0x01) {}
 }
 
 /*
@@ -124,6 +154,7 @@ can_rx_message(void)
 
     // If there's nowhere to put a message, just drop it.
     if (CAN_BUF_FULL) {
+        can_trace(TRACE_CAN_IROVF);
         return;
     }
     buf = CAN_BUF_PTR(can_buf_head);
@@ -136,11 +167,11 @@ can_rx_message(void)
                          &buf->data[0]);
 
     if ((ret == ERR_OK) &&
-        (type == DATA_FRAME) &&
-        (format == STANDARD_FORMAT)) {
+        (type == DATA_FRAME)) {
 
         // accept this message
         can_buf_head++;
+        can_trace(TRACE_CAN_IRX);
     }
 }
 
@@ -148,6 +179,7 @@ void
 can_listen(struct pt *pt)
 {
     static timer_t  can_idle_timer;
+    static bool     can_idle_flag = FALSE;
 
     pt_begin(pt);
 
@@ -160,24 +192,34 @@ can_listen(struct pt *pt)
         // handle CAN messages
         while (!CAN_BUF_EMPTY) {
             can_buf_t *buf = CAN_BUF_PTR(can_buf_tail);
-            can_buf_tail++;
+            can_trace(TRACE_CAN_TRX);
 
             // We're hearing CAN, so reset the idle timer and let the app know.
             timer_reset(can_idle_timer, CAN_IDLE_TIMEOUT);
+            if (can_idle_flag) {
+                can_idle_flag = FALSE;
                 app_can_idle(FALSE);
+            }
 
             // Handle MRS flasher messages directly.
             if (buf->id == MRS_FLASHER_ID) {
-                mrs_flash_rx(buf);
-                continue;
+                can_trace(TRACE_CAN_MRS_RX);
+                mrs_bootrom_rx(buf);
+            }
+            
+            // Pass the message to the application.
+            else {
+                can_trace(TRACE_CAN_APP_RX);
+                app_can_receive(buf);
             }
 
-            // Pass the message to the application.
-            app_can_receive(buf);
+            // mark the slot as free
+            can_buf_tail++;
         }
 
         // if we haven't heard a useful CAN message for a while...
-        if (timer_expired(can_idle_timer)) {
+        if (!can_idle_flag && timer_expired(can_idle_timer)) {
+            can_idle_flag = TRUE;
             app_can_idle(TRUE);
         }
 
