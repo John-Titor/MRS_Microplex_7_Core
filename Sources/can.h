@@ -24,10 +24,10 @@ typedef struct {
  *
  * @param code		The trace message payload.
  */
-#if 1
+#if 0
 #define can_trace(_x)   _can_trace(_x)
 #else
-#define can_trace(_x)   do {} while(0);
+#define can_trace(_x)   do {} while(0)
 #endif
 extern void _can_trace(uint8_t code);
 
@@ -38,11 +38,14 @@ extern void _can_trace(uint8_t code);
 #define TRACE_CAN_MRS_RX    0xf3    // message for mrs_bootrom code
 #define TRACE_CAN_APP_RX    0xf4    // message for app
 
-#define TRACE_MRS_BADMSG    0xe0    // unhandled / rejected message
-#define TRACE_MRS_SCAN      0xe1
-#define TRACE_MRS_PROGRAM   0xe2
-#define TRACE_MRS_SELECT    0xe3
-#define TRACE_MRS_GET_PARAM 0xe4
+#define TRACE_MRS_BADMSG            0xe0    // unhandled / rejected message
+#define TRACE_MRS_SCAN              0xe1
+#define TRACE_MRS_PROGRAM           0xe2
+#define TRACE_MRS_SELECT            0xe3
+#define TRACE_MRS_GET_PARAM         0xe4
+#define TRACE_MRS_EEPROM_ENABLE     0xe5
+#define TRACE_MRS_EEPROM_DISABLE    0xe6
+#define TRACE_MRS_EEPROM_WRITE      0xe7
 
 /**
  * Adds a single character to the CAN console buffer.
@@ -61,9 +64,13 @@ extern void can_putchar(char ch);
  * any transmit slot. Messages queued with this interface
  * may not be transmitted in order.
  * 
- * @param buf       The message to send.
+ * @param id        Message ID
+ * @param dlc       Message data length
+ * @param data      Message data
  */
-extern void can_tx_async(can_buf_t *buf);
+extern void can_tx_async(uint32_t id,
+                         uint8_t dlc,
+                         const uint8_t *data);
 
 /**
  * Send a CAN message, explicitly ordered against other 
@@ -73,14 +80,24 @@ extern void can_tx_async(can_buf_t *buf);
  * will wait until any other message queued by this 
  * API has been sent.
  * 
- * @param buf       The message to send.
+ * @param id        Message ID
+ * @param dlc       Message data length
+ * @param data      Message data
  */
-extern void can_tx_ordered(can_buf_t *buf);
+extern void can_tx_ordered(uint32_t id,
+                           uint8_t dlc,
+                           const uint8_t *data);
 
 /**
  * Send a CAN message and wait for it to be sent.
+ * 
+ * @param id        Message ID
+ * @param dlc       Message data length
+ * @param data      Message data
  */
-extern void can_tx_blocking(can_buf_t *buf);
+extern void can_tx_blocking(uint32_t id,
+                            uint8_t dlc,
+                            const uint8_t *data);
 
 /**
  * (Re)configure the CAN hardware.

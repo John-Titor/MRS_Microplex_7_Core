@@ -7,16 +7,17 @@
 
 #include "can.h"
 
-#define MRS_SCAN_RSP_ID     0x1ffffff0
-#define MRS_FLASHER_ID      0x1ffffff1
-#define MRS_RESPONSE_ID     0x1ffffff2
-#define MRS_DATA_ID         0x1ffffff4
+#define MRS_ID_MASK                 0x1ffffff0      // XXX TODO fetch from EEPROM
+#define MRS_SCAN_RSP_ID             0x1ffffff0
+#define MRS_COMMAND_ID              0x1ffffff1
+#define MRS_RESPONSE_ID             0x1ffffff2
+#define MRS_EEPROM_READ_ID          0x1ffffff4
+#define MRS_EEPROM_WRITE_ID         0x1ffffff5
 
-#define MRS_PARAM_ADDR_SERIAL       4
-#define MRS_PARAM_ADDR_BL_VERS      85
-#define MRS_PARAM_ADDR_PGM_STATE    87
-#define MRS_PARAM_CAN_RATE_1        93
-#define MRS_PARAM_CAN_RATE_2        95
+#define MRS_PARAM_ADDR_SERIAL       0x04
+#define MRS_PARAM_ADDR_BL_VERS      0x53
+#define MRS_PARAM_CAN_RATE_1        0x5b
+#define MRS_PARAM_CAN_RATE_2        0x5d
 
 typedef enum {
     MRS_CAN_1000KBPS    = 1,

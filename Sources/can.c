@@ -21,7 +21,7 @@ static uint8_t              can_buf_tail;
 #define CAN_BUF_FULL        ((can_buf_head - can_buf_tail) >= CAN_RX_FIFO_SIZE)
 
 void
-can_trace(uint8_t code)
+_can_trace(uint8_t code)
 {
     uint8_t b[1];
     uint8_t ret;
@@ -53,30 +53,30 @@ can_putchar(char ch)
 }
 
 void
-can_tx_async(can_buf_t *buf)
+can_tx_async(uint32_t id, uint8_t dlc, const uint8_t *data)
 {
     uint8_t ret;
 
     do {
-        ret = CAN1_SendFrameExt(buf->id, DATA_FRAME, buf->dlc, &buf->data[0]);
+        ret = CAN1_SendFrameExt(id, DATA_FRAME, dlc, (byte *)data);
     } while (ret == ERR_TXFULL);    
 }
 
 void
-can_tx_ordered(can_buf_t *buf)
+can_tx_ordered(uint32_t id, uint8_t dlc, const uint8_t *data)
 {
     uint8_t ret;
 
     /* send explicitly using buffer 0 to ensure ordering */
     do {
-        ret = CAN1_SendFrame(0, buf->id, DATA_FRAME, buf->dlc, &buf->data[0]);
+        ret = CAN1_SendFrame(0, id, DATA_FRAME, dlc, (byte *)data);
     } while (ret == ERR_TXFULL);    
 }
 
 void
-can_tx_blocking(can_buf_t *buf)
+can_tx_blocking(uint32_t id, uint8_t dlc, const uint8_t *data)
 {
-    can_tx_ordered(buf);
+    can_tx_ordered(id, dlc, data);
 
     /* and wait for buffer 0 to be done */
     while (CAN1_GetStateTX() ^ 0x01) {}
@@ -202,7 +202,7 @@ can_listen(struct pt *pt)
             }
 
             // Handle MRS flasher messages directly.
-            if (buf->id == MRS_FLASHER_ID) {
+            if ((buf->id & MRS_ID_MASK) == MRS_ID_MASK) {
                 can_trace(TRACE_CAN_MRS_RX);
                 mrs_bootrom_rx(buf);
             }
