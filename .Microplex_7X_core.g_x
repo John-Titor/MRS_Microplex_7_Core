@@ -1,0 +1,73 @@
+<CodeGenerationInfo>
+  <ToolchainSettings>
+    <option>
+      <name>PE_G_4PEx_ToolChain_Compiler_SearchUserPaths</name>
+      <values lines_count="2">
+        <Line>"${ProjDirPath}/Sources"</Line>
+        <Line>"${ProjDirPath}/Generated_Code"</Line>
+      </values>
+    </option>
+  </ToolchainSettings>
+  <GeneratedFilesList>
+    <GeneratedByPE>
+      <File Name="Generated_Code/DO_30V_10V_2.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="18" />
+      <File Name="Documentation/Microplex_7X_core.txt" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="3072" />
+      <File Name="Generated_Code/PE_Const.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" />
+      <File Name="Generated_Code/AI_3_PU.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="14" />
+      <File Name="Generated_Code/PE_Types.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" />
+      <File Name="Generated_Code/DO_HSD_2.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="21" />
+      <File Name="Generated_Code/TickTimer.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="27" />
+      <File Name="Generated_Code/DO_30V_10V_1.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="9" />
+      <File Name="Generated_Code/PE_Error.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" />
+      <File Name="Generated_Code/DI_CAN_ERR.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="6" />
+      <File Name="Generated_Code/DO_HSD_2.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="21" />
+      <File Name="Generated_Code/TickTimer.c" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="27" />
+      <File Name="Generated_Code/DO_30V_10V_1.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="9" />
+      <File Name="Generated_Code/WDog1.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="29" />
+      <File Name="Generated_Code/DI_CAN_ERR.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="6" />
+      <File Name="Generated_Code/CAN1.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="45" />
+      <File Name="Generated_Code/DO_HSD_1.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="20" />
+      <File Name="Sources/Events.h" FileDate="2021-06-27, 23:43:24" FileAge="1624862604000" FileType="131328" />
+      <File Name="Generated_Code/WDog1.c" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="29" />
+      <File Name="Generated_Code/CAN1.c" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="45" />
+      <File Name="Generated_Code/DO_HSD_1.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="20" />
+      <File Name="Sources/Events.c" FileDate="2021-07-11, 16:04:03" FileAge="1626044643000" FileType="131328" />
+      <File Name="Generated_Code/DO_20MA_2.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="13" />
+      <File Name="Generated_Code/DO_20MA_2.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="13" />
+      <File Name="Project_Settings/Linker_Files/ProcessorExpert.prm" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="8" CompNumb="2" />
+      <File Name="Generated_Code/DO_20MA_1.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="12" />
+      <File Name="Sources/main.c" FileDate="2021-07-11, 11:46:37" FileAge="1626029197000" FileType="128" />
+      <File Name="Generated_Code/CAN_STB_N.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="8" />
+      <File Name="Generated_Code/DO_20MA_1.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="12" />
+      <File Name="Generated_Code/Cpu.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/IEE1.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="49" />
+      <File Name="Generated_Code/CAN_STB_N.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="8" />
+      <File Name="Generated_Code/Cpu.c" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/IEE1.c" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="49" />
+      <File Name="Documentation/Microplex_7X_core_SIGNALS.txt" FileDate="2021-07-11, 17:13:20" FileAge="1626048800000" FileType="3072" />
+      <File Name="Generated_Code/DO_HSD_SEN.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="24" />
+      <File Name="Generated_Code/DO_HSD_SEN.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="24" />
+      <File Name="Generated_Code/CAN_EN.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="7" />
+      <File Name="Generated_Code/IO_Map.h" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" />
+      <File Name="Generated_Code/CAN_EN.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="7" />
+      <File Name="Generated_Code/IO_Map.c" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" />
+      <File Name="Generated_Code/DO_HSD_4.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="23" />
+      <File Name="Generated_Code/DO_30V_10V_3.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="19" />
+      <File Name="Generated_Code/DO_POWER.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="25" />
+      <File Name="Generated_Code/DO_HSD_4.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="23" />
+      <File Name="Generated_Code/DO_30V_10V_3.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="19" />
+      <File Name="Generated_Code/DO_POWER.c" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="25" />
+      <File Name="Generated_Code/CAN_WAKE.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="11" />
+      <File Name="Generated_Code/Vectors.c" FileDate="2021-07-11, 15:13:28" FileAge="1626041608000" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/DO_HSD_3.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="22" />
+      <File Name="Generated_Code/AD1.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="15" />
+      <File Name="Generated_Code/DO_30V_10V_2.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="18" />
+      <File Name="Generated_Code/CAN_WAKE.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="11" />
+      <File Name="Generated_Code/DO_HSD_3.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="22" />
+      <File Name="Documentation/Microplex_7X_core_Settings.xml" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="3072" />
+      <File Name="Generated_Code/AD1.c" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="15" />
+      <File Name="Generated_Code/AI_3_PU.h" FileDate="2021-07-11, 15:13:29" FileAge="1626041609000" FileType="45637" CompNumb="14" />
+    </GeneratedByPE>
+  </GeneratedFilesList>
+  <CodeGenReference>4</CodeGenReference>
+</CodeGenerationInfo>
