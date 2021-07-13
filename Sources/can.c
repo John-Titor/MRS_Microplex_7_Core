@@ -1,5 +1,5 @@
 /*
- * CAN messaging
+ * CAN messaging.
  */
 
 #include <CAN1.h>

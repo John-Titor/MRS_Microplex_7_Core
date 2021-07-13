@@ -31,24 +31,25 @@
 #include "Cpu.h"
 #include "Events.h"
 #include "DI_CAN_ERR.h"
-#include "AI_3_PU.h"
 #include "CAN_EN.h"
 #include "CAN_STB_N.h"
 #include "CAN_WAKE.h"
-#include "DO_20MA_1.h"
-#include "DO_20MA_2.h"
+#include "DO_1.h"
 #include "DO_30V_10V_1.h"
 #include "DO_30V_10V_2.h"
 #include "DO_30V_10V_3.h"
-#include "DO_HSD_1.h"
-#include "DO_HSD_2.h"
-#include "DO_HSD_3.h"
-#include "DO_HSD_4.h"
-#include "DO_HSD_SEN.h"
+#include "DO_2.h"
 #include "AD1.h"
 #include "DO_POWER.h"
 #include "CAN1.h"
 #include "IEE1.h"
+#include "PWM_5.h"
+#include "PWM_6.h"
+#include "PWM_7.h"
+#include "PWM_1.h"
+#include "PWM_3.h"
+#include "PWM_4.h"
+#include "PWM_2.h"
 #include "TickTimer.h"
 #include "WDog1.h"
 /* Include shared modules, which are used for whole project */
@@ -58,19 +59,59 @@
 #include "IO_Map.h"
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
-extern void app_main(void);
+#include "can.h"
+#include "io.h"
+#include "lib.h"
+#include "pt.h"
+
+static struct pt pt_can_listener;
+
+extern void app_init(void);
+extern void app_loop(void);
 
 void main(void)
 {
-  /* Write your local variable definition here */
+    /* Write your local variable definition here */
 
-  /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
-  PE_low_level_init();
-  /*** End of Processor Expert internal initialization.                    ***/
+    /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
+    PE_low_level_init();
+    /*** End of Processor Expert internal initialization.                    ***/
 
-  /* Write your code here */
-  /* For example: for(;;) { } */
-  app_main();
+    // Start with a freshly-reset watchdog.
+    (void)WDog1_Clear();
+
+    // Fix CAN config - PE_low_level_init doesn't know about the EEPROM.
+    can_reinit();
+
+    // Print / trace work now.
+    print("start");
+    can_trace(0xff);
+
+    // Disable PWM mode on 7X non-PWM outputs
+#ifdef TARGET_7X
+    // XXX TODO flip PWM_5 over to frequency-capture mode somehow.
+    (void)PWM_6_Disable();
+    AI_3_PU_ClrVal();
+    (void)PWM_7_Disable();
+    DO_20MA_1_ClrVal();
+#endif // TARGET_7X
+    
+    // Start the ADC in continuous mode.
+    (void)AD1_Start();
+    
+    // Init the application.
+    app_init();
+  
+    // Main loop; never exits
+    for (;;) {
+        (void)WDog1_Clear();                            // must be reset every 1s
+
+        // Run the CAN listener thread and any message-reception callouts
+        can_listen(&pt_can_listener);
+      
+        // Run the application.
+        app_loop();
+    }
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/

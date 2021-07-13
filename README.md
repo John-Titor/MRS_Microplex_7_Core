@@ -1,7 +1,7 @@
-# MRS Microplex 7X core firmware
+# MRS Microplex 7 core firmware
 
-This project serves as a starting point for writing your own application to run on the Microplex 7X without
-the overhead (or all of the functionality) of the MRS Developer Studio libraries.
+This project serves as a starting point for writing your own application to run on the Microplex 7 family
+without the overhead (or all of the functionality) of the MRS Developer Studio libraries.
 
 ## Protothreads (coroutines)
 

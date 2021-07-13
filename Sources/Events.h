@@ -35,24 +35,25 @@
 #include "PE_Const.h"
 #include "IO_Map.h"
 #include "DI_CAN_ERR.h"
-#include "AI_3_PU.h"
 #include "CAN_EN.h"
 #include "CAN_STB_N.h"
 #include "CAN_WAKE.h"
-#include "DO_20MA_1.h"
-#include "DO_20MA_2.h"
+#include "DO_1.h"
 #include "DO_30V_10V_1.h"
 #include "DO_30V_10V_2.h"
 #include "DO_30V_10V_3.h"
-#include "DO_HSD_1.h"
-#include "DO_HSD_2.h"
-#include "DO_HSD_3.h"
-#include "DO_HSD_4.h"
-#include "DO_HSD_SEN.h"
+#include "DO_2.h"
 #include "AD1.h"
 #include "DO_POWER.h"
 #include "CAN1.h"
 #include "IEE1.h"
+#include "PWM_5.h"
+#include "PWM_6.h"
+#include "PWM_7.h"
+#include "PWM_1.h"
+#include "PWM_3.h"
+#include "PWM_4.h"
+#include "PWM_2.h"
 #include "TickTimer.h"
 #include "WDog1.h"
 
@@ -83,6 +84,22 @@ void CAN1_OnFullRxBuffer(void);
 **         This event is called when the receive buffer is full after a
 **         successful reception of a message. The event is available
 **         only if Interrupt service/event is enabled.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void AD1_OnEnd(void);
+/*
+** ===================================================================
+**     Event       :  AD1_OnEnd (module Events)
+**
+**     Component   :  AD1 [ADC]
+**     Description :
+**         This event is called after the measurement (which consists
+**         of <1 or more conversions>) is/are finished.
+**         The event is available only when the <Interrupt
+**         service/event> property is enabled.
 **     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================
