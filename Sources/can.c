@@ -101,27 +101,27 @@ can_reinit(void)
 
     /* Configure based on rate stored in EEPROM. */
     switch (mrs_can_bitrate()) {
-        case MRS_CAN_1000KBPS:
-            CANBTR0 = 0x00;
-            CANBTR1 = 0x05;
-            break;
-        case MRS_CAN_800KBPS:
-            CANBTR0 = 0x00;
-            CANBTR1 = 0x07;
-            break;
-        case MRS_CAN_500KBPS:
-            CANBTR0 = 0x00;
-            CANBTR1 = 0x1c;
-            break;
-        case MRS_CAN_250KBPS:
-            CANBTR0 = 0x01;
-            CANBTR1 = 0x1c;
-            break;
-        case MRS_CAN_125KBPS:
-        default:
-            CANBTR0 = 0x03;
-            CANBTR1 = 0x1c;
-            break;
+    case MRS_CAN_1000KBPS:
+        CANBTR0 = 0x00;
+        CANBTR1 = 0x05;
+        break;
+    case MRS_CAN_800KBPS:
+        CANBTR0 = 0x00;
+        CANBTR1 = 0x07;
+        break;
+    case MRS_CAN_500KBPS:
+        CANBTR0 = 0x00;
+        CANBTR1 = 0x1c;
+        break;
+    case MRS_CAN_250KBPS:
+        CANBTR0 = 0x01;
+        CANBTR1 = 0x1c;
+        break;
+    case MRS_CAN_125KBPS:
+    default:
+        CANBTR0 = 0x03;
+        CANBTR1 = 0x1c;
+        break;
     }
 
     /* 
@@ -167,11 +167,13 @@ can_rx_message(void)
                          &buf->data[0]);
 
     if ((ret == ERR_OK) &&
-        (type == DATA_FRAME)) {
+            (type == DATA_FRAME)) {
 
-        // accept this message
-        can_buf_head++;
-        can_trace(TRACE_CAN_IRX);
+        if (((buf->id & MRS_ID_MASK) == MRS_ID_MASK) || app_can_filter(buf)) {
+            // accept this message
+            can_buf_head++;
+            can_trace(TRACE_CAN_IRX);
+        }
     }
 }
 
@@ -180,6 +182,8 @@ can_listen(struct pt *pt)
 {
     static timer_t  can_idle_timer;
     static bool     can_idle_flag = FALSE;
+    uint8_t limit;
+
 
     pt_begin(pt);
 
@@ -188,9 +192,11 @@ can_listen(struct pt *pt)
     timer_reset(can_idle_timer, CAN_IDLE_TIMEOUT);
 
     for (;;) {
+        // Limit the number of messages that will be processed to avoid watchdogging
+        // during a message storm.
+        limit = CAN_RX_FIFO_SIZE;
 
-        // handle CAN messages
-        while (!CAN_BUF_EMPTY) {
+        while (!CAN_BUF_EMPTY && limit--) {
             can_buf_t *buf = CAN_BUF_PTR(can_buf_tail);
             can_trace(TRACE_CAN_TRX);
 
@@ -206,7 +212,7 @@ can_listen(struct pt *pt)
                 can_trace(TRACE_CAN_MRS_RX);
                 mrs_bootrom_rx(buf);
             }
-            
+
             // Pass the message to the application.
             else {
                 can_trace(TRACE_CAN_APP_RX);

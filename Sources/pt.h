@@ -27,7 +27,7 @@ struct pt {
     signed char   status;
 };
 #define pt_init()                                                               \
-    { .label = 0, .status = 0 }
+        { .label = 0, .status = 0 }
 
 /**
  * Protothread start. 
@@ -36,25 +36,25 @@ struct pt {
  * functions are called.
  * Any code preceding pt_begin will run every time the thread is run.
  */
-#define pt_begin(pt)                                                            \
-    switch ((pt)->label) {                                                      \
-    case 0:
+#define pt_begin(pt)                    \
+        switch ((pt)->label) {          \
+        case 0:
 
-#define pt_label(pt, stat)                                                      \
-    do {                                                                        \
-        (pt)->label = __LINE__;                                                 \
-        (pt)->status = (stat);                                                  \
-    case __LINE__:;                                                             \
-    } while (0)
+#define pt_label(pt, stat)              \
+        do {                            \
+            (pt)->label = __LINE__;     \
+            (pt)->status = (stat);      \
+        case __LINE__:;                 \
+        } while (0)
 
 /**
  * Protothread end.
  * 
  * Must be the last thing at the top level in the protothread function.
  */
-#define pt_end(pt)                                                              \
-    pt_label(pt, PT_STATUS_FINISHED);                                           \
-    }
+#define pt_end(pt)                        \
+        pt_label(pt, PT_STATUS_FINISHED); \
+        }
 
 /**
  * Reset a protothread.
@@ -63,11 +63,11 @@ struct pt {
  * 
  * @param pt            The protothread to reset.
  */
-#define pt_reset(pt)                                                            \
-    do {                                                                        \
-        (pt)->label = 0;                                                        \
-        (pt)->status = 0;                                                       \
-    } while(0)
+#define pt_reset(pt)           \
+        do {                   \
+            (pt)->label = 0;   \
+            (pt)->status = 0;  \
+        } while(0)
 
 /*
  * Core protothreads API
@@ -95,13 +95,13 @@ struct pt {
  * @param cond          The condition to be tested. Will be evaluated once
  *                      each time the protothread is run until it returns true.
  */
-#define pt_wait(pt, cond)                                                       \
-    do {                                                                        \
-        pt_label(pt, PT_STATUS_BLOCKED);                                        \
-        if (!(cond)) {                                                          \
-            return;                                                             \
-        }                                                                       \
-    } while (0)
+#define pt_wait(pt, cond)                       \
+        do {                                    \
+            pt_label(pt, PT_STATUS_BLOCKED);    \
+            if (!(cond)) {                      \
+                return;                         \
+            }                                   \
+        } while (0)
 
 /**
  * Yield the current timeslice.
@@ -110,19 +110,19 @@ struct pt {
  *
  * @param pt            The current protothread.
  */
-#define pt_yield(pt)                                                            \
-    do {                                                                        \
-        pt_label(pt, PT_STATUS_YIELDED);                                        \
-        if (pt_status(pt) == PT_STATUS_YIELDED) {                               \
-            (pt)->status = PT_STATUS_BLOCKED;                                   \
-            return;                                                             \
-        }                                                                       \
-    } while (0)
+#define pt_yield(pt)                                    \
+        do {                                            \
+            pt_label(pt, PT_STATUS_YIELDED);            \
+            if (pt_status(pt) == PT_STATUS_YIELDED) {   \
+                (pt)->status = PT_STATUS_BLOCKED;       \
+                return;                                 \
+            }                                           \
+        } while (0)
 
-#define pt_exit(pt, stat)                                                       \
-    do {                                                                        \
-        pt_label(pt, stat);                                                     \
-        return;                                                                 \
-    } while (0)
+#define pt_exit(pt, stat)       \
+        do {                    \
+            pt_label(pt, stat); \
+            return;             \
+        } while (0)
 
 #endif // _PT_H

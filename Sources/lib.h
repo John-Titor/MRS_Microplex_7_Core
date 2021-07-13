@@ -15,10 +15,10 @@ typedef unsigned long   uint32_t;
 /**
  * Assert that a condition is true.
  */
-#define REQUIRE(_cond)                                      \
-    do {                                                    \
-        if (!(_cond))  __require_abort(__FILE__, __LINE__); \
-    } while(0)
+#define REQUIRE(_cond)                                          \
+        do {                                                    \
+            if (!(_cond))  __require_abort(__FILE__, __LINE__); \
+        } while(0)
 
 #define ABORT()     REQUIRE(0)
 

@@ -9,6 +9,16 @@
 #include "lib.h"
 
 /**
+ * Application CAN filter; called at interrupt time when a message
+ * is received.
+ * 
+ * @param buf		CAN message.
+ * @return			TRUE if the message should be queued for processing,
+ * 					FALSE if it has been handled or should be discarded.
+ */
+extern bool app_can_filter(can_buf_t *buf);
+
+/**
  * Application CAN receive; called when a message is received
  * but not handled by the framework.
  */

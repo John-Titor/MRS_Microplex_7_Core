@@ -28,8 +28,8 @@ typedef struct _timer {
 typedef struct _timer_call {
     struct _timer_call  *_next;
     volatile uint16_t   delay_ms;
-    void                (*callback)(void);      // function to call - must be interrupt-safe
-    uint16_t            period_ms;              // tick interval between calls, 0 for one-shot
+    void                (*callback)(void);  // function to call - must be interrupt-safe
+    uint16_t            period_ms;          // tick interval between calls, 0 for one-shot
 } timer_call_t;
 
 /**
@@ -51,12 +51,12 @@ extern void                     _timer_call_register(timer_call_t *call);
 /** 
  * Reset a one-shot timer or timer callback
  */
-#define timer_reset(_timer, _delay)     \
-    do {                                \
-        EnterCritical();                \
-        (_timer).delay_ms = _delay;     \
-        ExitCritical();                 \
-    } while(0)
+#define timer_reset(_timer, _delay)         \
+        do {                                \
+            EnterCritical();                \
+            (_timer).delay_ms = _delay;     \
+            ExitCritical();                 \
+        } while(0)
 
 /**
  * Test whether a timer or callback has expired
@@ -72,10 +72,10 @@ extern void                     _timer_call_register(timer_call_t *call);
  * @param timer         The timer to use
  * @param ms            The number of milliseconds to block
  */
-#define pt_delay(pt, timer, ms)                                                 \
-    do {                                                                        \
-        timer_reset(timer, ms);                                                 \
-        pt_wait(pt, timer_expired(timer));                                      \
-    } while(0)
+#define pt_delay(pt, timer, ms)                 \
+        do {                                    \
+            timer_reset(timer, ms);             \
+            pt_wait(pt, timer_expired(timer));  \
+        } while(0)
 
 #endif // _TIMER_H

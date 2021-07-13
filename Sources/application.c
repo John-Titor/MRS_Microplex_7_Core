@@ -12,7 +12,7 @@
 void
 app_init()
 {
-	print("app init");
+    print("app init");
 }
 
 /**

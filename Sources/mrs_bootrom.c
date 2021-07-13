@@ -11,11 +11,12 @@
  * 20 11 f3 33 af       21 11 01 00 00              EEPROM write enable
  * 20 02                20 f0 02 00 00              EEPROM write disable
  * 
- * EEPROM write data is handleds at 0x1ffffff5:
+ * EEPROM write data (specific locations only) is handled at 0x1ffffff5:
  * 
  * aa aa ...            20 e8 00 00 00              write eeprom data to aa aa
- * 
- * Note that special handling is required for some fields...
+ *                      20 e8 0f 00 00				eeprom not unlocked
+ *                      
+ * There are lots of eeprom error messages, we just send the most generic one.
  */
 
 #include <string.h>
@@ -32,8 +33,9 @@
 static bool     mrs_module_selected = FALSE;
 static bool     mrs_eeprom_write_enable = FALSE;
 
-static void     mrs_param_copy_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *dst);
-static bool     mrs_param_compare_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *ref);
+static void     mrs_param_copy_bytes(uint16_t param_offset, uint8_t param_len, uint8_t *dst);
+static bool     mrs_param_compare_bytes(uint16_t param_offset, uint8_t param_len, uint8_t *ref);
+static void		mrs_param_store_bytes(uint16_t param_offset, uint8_t param_len, uint8_t *src);
 
 typedef struct {
     uint8_t     id:4;
@@ -46,8 +48,8 @@ static void     mrs_scan(can_buf_t *buf);
 static void     mrs_select(can_buf_t *buf);
 
 static const mrs_bootrom_handler_t  unselected_handlers[] = {
-    { 0x1, 2, { 0x00, 0x00},                    mrs_scan },
-    { 0x1, 2, { 0x20, 0x10},                    mrs_select }
+        { 0x1, 2, { 0x00, 0x00},                    mrs_scan },
+        { 0x1, 2, { 0x20, 0x10},                    mrs_select }
 };
 
 static void     mrs_enter_program(can_buf_t *buf);
@@ -57,11 +59,11 @@ static void     mrs_write_eeprom_disable(can_buf_t *buf);
 static void     mrs_write_eeprom(can_buf_t *buf);
 
 static const mrs_bootrom_handler_t  selected_handlers[] = {
-    { 0x1, 2, { 0x20, 0x00},                    mrs_enter_program },
-    { 0x1, 2, { 0x20, 0x03},                    mrs_read_eeprom },
-    { 0x1, 5, { 0x20, 0x11, 0xf3, 0x33, 0xaf},  mrs_write_eeprom_enable },
-    { 0x1, 2, { 0x20, 0x02},                    mrs_write_eeprom_disable },
-    { 0x5, 0, { 0 },                            mrs_write_eeprom }
+        { 0x1, 2, { 0x20, 0x00},                    mrs_enter_program },
+        { 0x1, 2, { 0x20, 0x03},                    mrs_read_eeprom },
+        { 0x1, 5, { 0x20, 0x11, 0xf3, 0x33, 0xaf},  mrs_write_eeprom_enable },
+        { 0x1, 2, { 0x20, 0x02},                    mrs_write_eeprom_disable },
+        { 0x5, 0, { 0 },                            mrs_write_eeprom }
 };
 
 static mrs_can_rate_t
@@ -101,9 +103,9 @@ mrs_dispatch_handler(const mrs_bootrom_handler_t *handler, uint8_t table_len, ca
 {
     while (table_len--) {
         if ((handler->id == (buf->id & 0xf)) &&             /* command matches */
-            (handler->len <= buf->dlc) &&                   /* message is long enough */
-            !memcmp(handler->cmd, buf->data, handler->len)) { /* prefix matches */
-        
+                (handler->len <= buf->dlc) &&                   /* message is long enough */
+                !memcmp(handler->cmd, buf->data, handler->len)) { /* prefix matches */
+
             handler->func(buf);
             return TRUE;
         }
@@ -120,10 +122,10 @@ mrs_bootrom_rx(can_buf_t *buf)
                              buf)) {
         return;
     }
-    if (mrs_module_selected &&
-        mrs_dispatch_handler(selected_handlers, 
-                             sizeof(selected_handlers) / sizeof(mrs_bootrom_handler_t),
-                             buf)) {
+    if (mrs_module_selected
+            && mrs_dispatch_handler(selected_handlers, 
+                                    sizeof(selected_handlers) / sizeof(mrs_bootrom_handler_t),
+                                    buf)) {
         return;
     }
     can_trace(TRACE_MRS_BADMSG);
@@ -145,6 +147,7 @@ mrs_scan(can_buf_t *buf)
                    &data[0]);
 
     mrs_module_selected = FALSE;
+    mrs_eeprom_write_enable = FALSE;
 }
 
 void 
@@ -195,13 +198,12 @@ mrs_select(can_buf_t *buf)
 void
 mrs_read_eeprom(can_buf_t *buf)
 {
-    const uint8_t param_offset = buf->data[3];
+    const uint16_t param_offset = ((uint16_t)buf->data[2] << 8) | buf->data[3];
     const uint8_t param_len = buf->data[4];
     uint8_t data[8];
 
     can_trace(TRACE_MRS_GET_PARAM);
 
-    /* ignore high parameter address byte, it's always zero */
     mrs_param_copy_bytes(param_offset, param_len, &data[0]);
     can_tx_ordered(MRS_EEPROM_READ_ID | CAN_EXTENDED_FRAME_ID,
                    param_len,
@@ -237,29 +239,48 @@ mrs_write_eeprom_disable(can_buf_t *buf)
 void
 mrs_write_eeprom(can_buf_t *buf)
 {
-    uint16_t address = ((uint16_t)buf->data[0] << 8) + buf->data[1];
-    uint8_t len = buf->dlc - 2;
-    uint8_t *src = &buf->data[2];
-    uint8_t data[5] = {0x20, 0xe8};
+    const uint16_t address = ((uint16_t)buf->data[0] << 8) | buf->data[1];
+    const uint8_t len = buf->dlc - 2;
+    uint8_t * const src = &buf->data[2];
+    uint8_t data[5] = {0x20, 0xe8, 0x0f};	// default to error
 
     can_trace(TRACE_MRS_EEPROM_WRITE);
-#if 0
-    /*
-     * Limit what we'll allow to be set.
-     */
-    if (address == )
 
-    while (len--) {
-        (void)IEE1_SetByte(address++, *src++);
+    if (mrs_eeprom_write_enable) {
+
+        // CAN bitrate update?
+        if ((address == MRS_PARAM_CAN_RATE_1) &&	// speed 2 is auto-updated only 
+                (len == 2) && 							// write just this value
+                ((src[0] ^ src[1]) == 0xff) &&			// check code is OK
+                (src[1] >= MRS_CAN_1000KBPS) &&			// value is within bounds
+                (src[1] <= MRS_CAN_125KBPS)) {
+
+            // write backup copy, and approve this write
+            mrs_param_store_bytes(MRS_PARAM_CAN_RATE_2, 2, src);
+            data[2] = 0;
+        }
+
+        // write to "user" area of the EEPROM (first page only)
+        else if ((address >= 0x200) &&
+                (address < 0x400) &&
+                ((address + len) <= 0x400)) {
+            data[2] = 0;
+        }
     }
-#endif
+
+    // if write was approved
+    if (data[2] == 0) {
+        mrs_param_store_bytes(address, len, src);
+    }
+
+    // and send response
     can_tx_ordered(MRS_RESPONSE_ID | CAN_EXTENDED_FRAME_ID,
                    sizeof(data),
                    &data[0]);
 }
 
 static void
-mrs_param_copy_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *dst)
+mrs_param_copy_bytes(uint16_t param_offset, uint8_t param_len, uint8_t *dst)
 {
     while (param_len--) {
         (void)IEE1_GetByte(MRS_PARAM_BASE + param_offset++, dst++);
@@ -267,7 +288,7 @@ mrs_param_copy_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *dst)
 }
 
 static bool
-mrs_param_compare_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *ref)
+mrs_param_compare_bytes(uint16_t param_offset, uint8_t param_len, uint8_t *ref)
 {
     while (param_len--) {
         uint8_t v;
@@ -278,4 +299,12 @@ mrs_param_compare_bytes(uint8_t param_offset, uint8_t param_len, uint8_t *ref)
         }
     }
     return TRUE;
+}
+
+static void
+mrs_param_store_bytes(uint16_t param_offset, uint8_t param_len, uint8_t *src)
+{
+    while (param_len--) {
+        (void)IEE1_SetByte(MRS_PARAM_BASE + param_offset++, *src++);
+    }
 }
