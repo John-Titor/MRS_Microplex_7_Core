@@ -2,12 +2,12 @@
  * Timers and timebase.
  */
 
-#ifndef _TIMER_H
-#define _TIMER_H
+#ifndef CORE_TIMER_H_
+#define CORE_TIMER_H_
 
 #include <Cpu.h>
 
-#include "lib.h"
+#include <core/lib.h>
 
 /**
  * Interrupt callback on 1ms timer tick.

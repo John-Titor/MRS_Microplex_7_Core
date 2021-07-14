@@ -4,13 +4,13 @@
 
 #include <CAN1.h>
 
-#include "callbacks.h"
-#include "can.h"
-#include "config.h"
-#include "lib.h"
-#include "mrs_bootrom.h"
-#include "pt.h"
-#include "timer.h"
+#include <config.h>
+#include <core/callbacks.h>
+#include <core/can.h>
+#include <core/lib.h>
+#include <core/mrs_bootrom.h>
+#include <core/pt.h>
+#include <core/timer.h>
 
 static can_buf_t            can_rx_fifo[CAN_RX_FIFO_SIZE];
 static volatile uint8_t     can_buf_head;

@@ -2,7 +2,9 @@
  * Timers and timed callbacks.
  */
 
-#include "timer.h"
+#include <stddef.h>
+
+#include <core/timer.h>
 
 #define TIMER_LIST_END              (timer_t *)1
 #define TIMER_CALL_LIST_END         (timer_call_t *)2
@@ -15,8 +17,6 @@ static timer_call_t     *timer_call_list = TIMER_CALL_LIST_END;
 void
 _timer_register(timer_t *timer)
 {
-    REQUIRE(timer != NULL);
-
     EnterCritical();
 
     if (!timer_registered(*timer)) {
@@ -32,9 +32,6 @@ void
 _timer_call_register(timer_call_t *call)
 {
     EnterCritical();
-
-    REQUIRE(call != NULL);
-    REQUIRE(call->callback != NULL);
 
     if (!timer_registered(*call)) {
 

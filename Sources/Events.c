@@ -32,8 +32,8 @@
 #include "Events.h"
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
-#include "can.h"
-#include "timer.h"
+#include <core/can.h>
+#include <core/timer.h>
 
 /*
 ** ===================================================================

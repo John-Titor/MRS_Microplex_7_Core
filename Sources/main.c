@@ -60,10 +60,10 @@
 #include "IO_Map.h"
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
-#include "can.h"
-#include "io.h"
-#include "lib.h"
-#include "pt.h"
+#include <core/can.h>
+#include <core/io.h>
+#include <core/lib.h>
+#include <core/pt.h>
 
 static struct pt pt_can_listener;
 

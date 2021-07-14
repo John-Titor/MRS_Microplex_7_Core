@@ -3,8 +3,8 @@
  *
  * Based on https://github.com/zserge/pt and cut down to just the bare necessities.
  */
-#ifndef _PT_H
-#define _PT_H
+#ifndef CORE_PT_H_
+#define CORE_PT_H_
 
 #include <stddef.h>
 
@@ -13,8 +13,6 @@
 #define PT_STATUS_FINISHED  -1
 #define PT_STATUS_YIELDED   -2
 
-// disable "condition always false"
-#pragma MESSAGE DISABLE C4001
 
 // disable "removed dead code"
 #pragma MESSAGE DISABLE C5660

@@ -2,9 +2,9 @@
  * Application top-level logic.
  */
 
-#include "io.h"
-#include "lib.h"
-#include "pt.h"
+#include <core/io.h>
+#include <core/lib.h>
+#include <core/pt.h>
 
 /**
  * Called once at startup.
