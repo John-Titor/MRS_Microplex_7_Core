@@ -1,4 +1,4 @@
-/*
+/**
  * Interfaces to the MRS boot ROM and flash protocol.
  */
 

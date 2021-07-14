@@ -34,7 +34,7 @@
         <Line>Project_Settings\Linker_Files\ProcessorExpert.prm</Line>
         <Line>Generated_Code\Vectors.c</Line>
       </GenExtraFiles>
-      <XtraAge1>1391224186</XtraAge1>
+      <XtraAge1>1391245437</XtraAge1>
       <GenExtraFileType1>4</GenExtraFileType1>
       <GenExtraFileType0>4</GenExtraFileType0>
       <GenLinkedFiles lines_count="0" />
@@ -104,7 +104,7 @@
     </GenFiles>
     <SignalListFile>Documentation\Microplex_7X_core_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>MetrowerksHCS08CC</DestinationCompiler>
-    <ProjectModificationStamp>40</ProjectModificationStamp>
+    <ProjectModificationStamp>41</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -113,7 +113,7 @@
     <GenDriverVersion>01.40</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
     <HeaderAge>1391233749</HeaderAge>
-    <CodeAge>1391235237</CodeAge>
+    <CodeAge>1391245437</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>18</GenNumMethods>
     <SetHighSpeed>false</SetHighSpeed>
@@ -987,7 +987,7 @@
     <GenDriverVersion>01.07</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
     <HeaderAge>1391233749</HeaderAge>
-    <CodeAge>1391224186</CodeAge>
+    <CodeAge>1391245437</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>25</GenNumMethods>
     <Enable>false</Enable>

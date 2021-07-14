@@ -8,6 +8,53 @@
 #ifndef IO_H_
 #define IO_H_
 
+/**
+ * Microplex 7 pin assignments across variants.
+ * 
+ * "Generic" names are assigned where a pin has different names between variants,
+ * and then variant-specific macros below map the per-variant name onto the generic
+ * name.
+ * 
+ * SoC Pin     Analog  Generic Name    7X              7H              7L
+ * -------------------------------------------------------------------------------
+ * A_0         0       AI_OP_1_CS_5    AI_OP_1         AI_CS_5         -
+ * A_1         1       AI_OP_2_CS_6    AI_OP_2         AI_CS_6         -
+ * A_2         2       AI_CS_2         AI_CS_2         AI_CS_2         -
+ * A_3                 DO_1            DO_20MA_2       DO_HSD_SEN2     -
+ * A_4                 DO_30V_10V_3    DO_30V_10V_3    -               -
+ * A_5                 DO_2            DO_HSD_SEN      DO_HSD_SEN1     -
+ * A_6         6       AI_2            AI_2            -               -
+ * A_7         7       AI_3            AI_3            -               -
+ * 
+ * B_0         8       AI_OP_3_CS_7    AI_OP_3         AI_CS_7         -
+ * B_1         9       AI_OP_4         AI_OP_4         -               -
+ * B_2         10      AI_CS_1         AI_CS_1         AI_CS_1         -
+ * B_3         11      AI_CS 3         AI_CS_3         AI_CS_3         -
+ * B_4         12      AI_CS_4         AI_CS_4         AI_CS_4         -
+ * B_5         13      AI_1            AI_1            -               -
+ * B_6         14      AI_KL15         AI_KL15         AI_KL15         AI_KL15
+ * 
+ * D_0                 PWM_7           DO_20MA_1       DO_HSD_7        DO_LSD_7
+ * D_2                 PWM_5           FREQ_IN         DO_HSD_5        DO_LSD_5
+ * D_3                 PWM_6           AI_3_PU         DO_HSD_6        DO_LSD_6
+ * D_4                 PWM_1           DO_HSD_1        DO_HSD_1        DO_LSD_1
+ * D_5                 PWM_3           DO_HSD_3        DO_HSD_3        DO_LSD_3
+ * D_6                 PWM_4           DO_HSD_4        DO_HSD_4        DO_LSD_4
+ * D_7                 PWM_2           DO_HSD_2        DO_HSD_2        DO_LSD_2
+ * 
+ * E_0                 DO_30V_10V_2    DO_30V_10V_2    -               -
+ * E_2                 DO_POWER        DO_POWER        DO_POWER        DO_POWER
+ * E_5                 CAN_WAKE        CAN_WAKE        CAN_WAKE        CAN_WAKE
+ * 
+ * F_0                 CAN_EN          CAN_EN          CAN_EN          CAN_EN
+ * F_2                 CAN_STB_N       CAN_STB_N       CAN_STB_N       CAN_STB_N
+ * F_3                 DI_CAN_ERR      DI_CAN_ERR      DI_CAN_ERR      DI_CAN_ERR
+ * F_5                 DO_30V_10V_1    DO_30V_10V_1    -               -
+ *
+ * XXX TODO something smart with FREQ_IN. It requires a different pin config,
+ *          which isn't something Platform Expert is good at.
+ */
+
 // Standard IOs common to every target
 #include "DI_CAN_ERR.h"
 #include "CAN_EN.h"
