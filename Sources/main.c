@@ -64,6 +64,8 @@
 #include <core/lib.h>
 #include <core/pt.h>
 
+#include <can_devices/blink_keypad.h>
+
 static struct pt pt_can_listener;
 
 extern void app_init(void);
@@ -99,6 +101,10 @@ void main(void)
     // Start the ADC in continuous mode.
     (void)AD1_Start();
     
+#ifdef CONFIG_WITH_BLINK_KEYPAD
+    bk_init();
+#endif
+    
     // Init the application.
     app_init();
   
@@ -109,6 +115,10 @@ void main(void)
         // Run the CAN listener thread and any message-reception callouts
         can_listen(&pt_can_listener);
       
+#ifdef CONFIG_WITH_BLINK_KEYPAD
+        bk_loop();
+#endif
+        
         // Run any registered threads
         pt_list_run();
         

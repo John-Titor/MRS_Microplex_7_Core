@@ -12,6 +12,8 @@
 #include <core/pt.h>
 #include <core/timer.h>
 
+#include <can_devices/blink_keypad.h>
+
 static can_buf_t            can_rx_fifo[CAN_RX_FIFO_SIZE];
 static volatile uint8_t     can_buf_head;
 static uint8_t              can_buf_tail;
@@ -212,6 +214,12 @@ can_listen(struct pt *pt)
                 can_trace(TRACE_CAN_MRS_RX);
                 mrs_bootrom_rx(buf);
             }
+
+#ifdef CONFIG_WITH_BLINK_KEYPAD
+            else if (bk_can_receive(buf)) {
+                // keypad driver absorbed the packet
+            }
+#endif
 
             // Pass the message to the application.
             else {
