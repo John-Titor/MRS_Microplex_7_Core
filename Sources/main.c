@@ -50,7 +50,6 @@
 #include "PWM_3.h"
 #include "PWM_4.h"
 #include "PWM_2.h"
-#include "IFsh1.h"
 #include "TickTimer.h"
 #include "WDog1.h"
 /* Include shared modules, which are used for whole project */
