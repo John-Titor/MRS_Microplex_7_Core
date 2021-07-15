@@ -14,8 +14,6 @@
 void
 app_init()
 {
-    print("app init");
-    bk_set_key_led(0, BK_RED, 0);
 }
 
 /**
@@ -31,6 +29,22 @@ app_loop()
     uint8_t evt = bk_get_event();
     
     if (evt != BK_EVENT_NONE) {
-        print("event %d", evt);
+        uint8_t key = evt & BK_KEY_MASK;
+        uint8_t event = evt & BK_EVENT_MASK;
+        
+        switch (event) {
+        case BK_EVENT_RELEASE:
+            print("key %d released", key);
+            bk_set_key_led(key, BK_OFF, 0);
+            break;
+        case BK_EVENT_SHORT_PRESS:
+            print("key %d short press", key);
+            bk_set_key_led(key, BK_GREEN, 0);
+            break;
+        case BK_EVENT_LONG_PRESS:
+            print("key %d long press", key);
+            bk_set_key_led(key, BK_BLUE, 0xaa);
+            break;
+        }
     }
 }
