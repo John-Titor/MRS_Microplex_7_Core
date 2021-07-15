@@ -207,24 +207,24 @@ bk_send_led_update(uint8_t phase)
     uint8_t data[8] = {0};
 
     for (i = 0; i < num_keys; i++) {
-        uint8_t color;
+        uint8_t color, offset;
 
         if (led_state[i].pattern & phase_mask) {
             color = led_state[i].color_b;
         } else {
             color = led_state[i].color_a;
         }
-     
+        offset = i;
         if (color & BK_RED) {
-            data[i / 8] = 1 << (i % 8);
+            data[offset / 8] |= 1 << (offset % 8);
         }
-        i += bit_offset;
+        offset += bit_offset;
         if (color & BK_GREEN) {
-            data[i / 8] = 1 << (i % 8);
+            data[offset / 8] |= 1 << (offset % 8);
         }
-        i += bit_offset;
-        if (color & BK_GREEN) {
-            data[i / 8] = 1 << (i % 8);
+        offset += bit_offset;
+        if (color & BK_BLUE) {
+            data[offset / 8] |= 1 << (offset % 8);
         }
     }
     can_tx_async(0x200 + keypad_id, sizeof(data), data);    
