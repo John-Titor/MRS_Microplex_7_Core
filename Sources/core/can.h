@@ -120,4 +120,23 @@ extern void can_rx_message(void);
  */
 extern void can_listen(struct pt *pt);
 
+/**
+ * Get a pointer to the oldest message in the CAN receive FIFO.
+ * 
+ * Use this in conjunction with can_buf_drop() if not using the
+ * can_listen protothread.
+ * 
+ * @returns         Pointer to the message or NULL if there are no
+ *                  messages in the FIFO.
+ */
+extern can_buf_t *can_buf_peek(void);
+
+/**
+ * Drop the oldest message from the CAN receive FIFO.
+ * 
+ * Does nothing if the FIFO is empty.
+ */
+extern void can_buf_drop(void);
+
+
 #endif /* CAN_H_ */

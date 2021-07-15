@@ -6,6 +6,8 @@
 #include <core/lib.h>
 #include <core/pt.h>
 
+#include <can_devices/blink_keypad.h>
+
 /**
  * Called once at startup.
  */
@@ -13,6 +15,7 @@ void
 app_init()
 {
     print("app init");
+    bk_set_key_led(0, BK_RED, 0);
 }
 
 /**
@@ -25,4 +28,9 @@ app_init()
 void
 app_loop()
 {
+    uint8_t evt = bk_get_event();
+    
+    if (evt != BK_EVENT_NONE) {
+        print("event %d", evt);
+    }
 }

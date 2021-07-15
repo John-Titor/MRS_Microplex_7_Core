@@ -182,6 +182,20 @@ can_rx_message(void)
     }
 }
 
+can_buf_t *
+can_buf_peek(void)
+{
+    return CAN_BUF_EMPTY ? NULL : CAN_BUF_PTR(can_buf_tail);
+}
+
+void
+can_buf_drop(void)
+{
+    if (!CAN_BUF_EMPTY) {
+        can_buf_tail++;
+    }
+}
+
 void
 can_listen(struct pt *pt)
 {
