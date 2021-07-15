@@ -10,8 +10,8 @@
 
 /* Protothread status values */
 #define PT_STATUS_BLOCKED   0
-#define PT_STATUS_FINISHED  -1
-#define PT_STATUS_YIELDED   -2
+#define PT_STATUS_FINISHED  1
+#define PT_STATUS_YIELDED   2
 
 
 // disable "removed dead code"
@@ -21,8 +21,8 @@
  * Local continuation using Duff's Device.
  */
 struct pt {
-    unsigned int  label;
-    signed char   status;
+    unsigned int  label:13;
+    unsigned int  status:3;
 };
 #define pt_init()                                                               \
         { .label = 0, .status = 0 }
