@@ -109,6 +109,9 @@ void main(void)
         // Run the CAN listener thread and any message-reception callouts
         can_listen(&pt_can_listener);
       
+        // Run any registered threads
+        pt_list_run();
+        
         // Run the application.
         app_loop();
     }

@@ -26,10 +26,10 @@ typedef struct _timer {
  *  One-shot or periodic timer callback.
  */
 typedef struct _timer_call {
-    struct _timer_call  *_next;
-    volatile uint16_t   delay_ms;
     void                (*callback)(void);  // function to call - must be interrupt-safe
+    volatile uint16_t   delay_ms;
     uint16_t            period_ms;          // tick interval between calls, 0 for one-shot
+    struct _timer_call  *_next;
 } timer_call_t;
 
 /**
