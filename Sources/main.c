@@ -59,9 +59,12 @@
 #include "IO_Map.h"
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
+#include <config.h>
+
 #include <core/can.h>
 #include <core/io.h>
 #include <core/lib.h>
+#include <core/mrs_bootrom.h>
 #include <core/pt.h>
 
 #include <can_devices/blink_keypad.h>
@@ -83,7 +86,7 @@ void main(void)
     (void)WDog1_Clear();
 
     // Fix CAN config - PE_low_level_init doesn't know about the EEPROM.
-    can_reinit();
+    can_reinit(mrs_can_bitrate());
 
     // Print / trace work now.
     print("start");

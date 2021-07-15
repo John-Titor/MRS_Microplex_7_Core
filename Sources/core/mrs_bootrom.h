@@ -19,18 +19,16 @@
 #define MRS_PARAM_CAN_RATE_1        0x5b
 #define MRS_PARAM_CAN_RATE_2        0x5d
 
-typedef enum {
-    MRS_CAN_1000KBPS    = 1,
-    MRS_CAN_800KBPS,
-    MRS_CAN_500KBPS,
-    MRS_CAN_250KBPS,
-    MRS_CAN_125KBPS
-} mrs_can_rate_t;
+#define MRS_CAN_1000KBPS            1
+#define MRS_CAN_800KBPS             2
+#define MRS_CAN_500KBPS             3
+#define MRS_CAN_250KBPS             4
+#define MRS_CAN_125KBPS             5
 
 /**
  * Get the CAN bitrate from EEPROM.
  */
-extern mrs_can_rate_t   mrs_can_bitrate(void);
+extern uint8_t   mrs_can_bitrate(void);
 
 /**
  * MRS CAN flash protocol handler.

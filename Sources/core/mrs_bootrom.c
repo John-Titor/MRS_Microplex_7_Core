@@ -66,7 +66,7 @@ static const mrs_bootrom_handler_t  selected_handlers[] = {
         { 0x5, 0, { 0 },                            mrs_write_eeprom }
 };
 
-static mrs_can_rate_t
+static uint8_t
 _mrs_can_try_bitrate(uint8_t addr)
 {
     uint8_t rate_code;
@@ -81,10 +81,10 @@ _mrs_can_try_bitrate(uint8_t addr)
     return 0;
 }
 
-mrs_can_rate_t
+uint8_t
 mrs_can_bitrate(void)
 {
-    mrs_can_rate_t  rate;
+    uint8_t rate;
 
     /* try each of the configured CAN bitrate sets */
     rate = _mrs_can_try_bitrate(MRS_PARAM_CAN_RATE_1);

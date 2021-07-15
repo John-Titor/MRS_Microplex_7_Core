@@ -101,8 +101,11 @@ extern void can_tx_blocking(uint32_t id,
 
 /**
  * (Re)configure the CAN hardware.
+ * 
+ * @param speed     CAN bitrate to select; one of the MRS_CAN_*
+ *                  constants from <core/mrs_bootrom.h>.
  */
-extern void can_reinit(void);
+extern void can_reinit(uint8_t speed);
 
 /**
  * Interrupt callback; copies CAN messages into the RX FIFO.

@@ -5,6 +5,7 @@
 #include <CAN1.h>
 
 #include <config.h>
+
 #include <core/callbacks.h>
 #include <core/can.h>
 #include <core/lib.h>
@@ -89,10 +90,8 @@ can_tx_blocking(uint32_t id, uint8_t dlc, const uint8_t *data)
  * and it seems to generate bogus clock config anyway, so fix it up here.
  */
 void
-can_reinit(void)
+can_reinit(uint8_t rate)
 {
-    REQUIRE(CAN_BUF_EMPTY);
-
     /* Switch to initialization mode. */
     CANCTL0 |= CANCTL0_INITRQ_MASK;
     while (!(CANCTL1 & CANCTL1_INITAK_MASK)) {
@@ -101,8 +100,8 @@ can_reinit(void)
     /* Enable MSCAN, select external clock. */
     CANCTL1 = CANCTL1_CANE_MASK;
 
-    /* Configure based on rate stored in EEPROM. */
-    switch (mrs_can_bitrate()) {
+    /* Configure for the selected rate. */
+    switch (rate) {
     case MRS_CAN_1000KBPS:
         CANBTR0 = 0x00;
         CANBTR1 = 0x05;
@@ -137,6 +136,10 @@ can_reinit(void)
     }
     CANRFLG |= 0xFE;                     /* Reset error flags */
     CANRIER = 0x01;                      /* Enable interrupts */
+
+    /* clear the FIFO */
+    can_buf_head = 0;
+    can_buf_tail = 0;
 
     // now we can enable RX events
     CAN1_EnableEvent();
