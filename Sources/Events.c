@@ -32,6 +32,7 @@
 #include "Events.h"
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
+#include <core/callbacks.h>
 #include <core/can.h>
 #include <core/timer.h>
 
@@ -88,7 +89,7 @@ void CAN1_OnFullRxBuffer(void)
 */
 void AD1_OnEnd(void)
 {
-  /* Write your code here ... */
+    app_adc_ready();
 }
 
 

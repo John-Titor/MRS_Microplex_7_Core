@@ -1,4 +1,4 @@
-/*
+/**
  * Application-level callbacks.
  */
 
@@ -24,4 +24,9 @@ void
 app_can_idle(bool is_idle)
 {
     (void)is_idle;
+}
+
+void
+app_adc_ready(void)
+{
 }
