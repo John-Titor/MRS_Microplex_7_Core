@@ -26,4 +26,16 @@ extern void __require_abort(const char *file, int line);
  */
 extern void print(const char *format, ...);
 
+/**
+ * Wrapper for printf().
+ *
+ * Sends output via CAN.
+ */
+extern void printn(const char *format, ...);
+
+/**
+ * Print a hexdump of a range of memory.
+ */
+extern void hexdump(uint8_t *addr, unsigned int count);
+
 #endif /* LIB_H_ */
