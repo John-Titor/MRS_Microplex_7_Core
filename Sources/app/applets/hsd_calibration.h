@@ -118,13 +118,8 @@ select_channel(uint8_t channel)
     (void)PWM_5_ClrValue();
     (void)PWM_6_ClrValue();
     (void)PWM_7_ClrValue();
-    if (channel < 4) {
-        DO_HSD_SEN1_ClrVal();
-        DO_HSD_SEN2_SetVal();
-    } else {
-        DO_HSD_SEN2_ClrVal();
-        DO_HSD_SEN1_SetVal();        
-    }
+	DO_HSD_SEN1_ClrVal();
+	DO_HSD_SEN2_ClrVal();
 #endif
 #ifdef TARGET_7X
     DO_HSD_SEN_ClrVal();
