@@ -7,7 +7,8 @@
 #include <core/pt.h>
 
 //#include <app/applets/blink_keypad_test.h>
-#include <app/applets/hsd_calibration.h>
+//#include <app/applets/hsd_calibration.h>
+//#include <app/applets/interrupt_load_test.h>
 
 /**
  * Called once at startup.
