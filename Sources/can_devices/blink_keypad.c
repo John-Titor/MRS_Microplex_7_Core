@@ -33,6 +33,8 @@ static uint8_t          keypad_id = BK_DEFAULT_KEYPAD_ID;
 static uint8_t          backlight_intensity;
 static uint8_t          key_intensity;
 static uint8_t          update_flags;
+static uint8_t      	blink_phase;
+
 
 #define UPDATE_KEYS         0x1
 #define UPDATE_INTENSITY    0x2
@@ -204,23 +206,29 @@ bk_set_backlight_intensity(uint8_t intensity)
     update_flags |= UPDATE_INTENSITY;
 }
 
-static void
-bk_send_led_update(uint8_t phase)
+uint8_t
+bk_get_key_led(uint8_t key)
 {
-    const uint8_t phase_mask = 1 << phase;
+    const uint8_t phase_mask = 1 << blink_phase;
+
+    if (led_state[key].pattern & phase_mask) {
+        return led_state[key].color_b;
+    } else {
+        return led_state[key].color_a;
+    }	
+}
+
+static void
+bk_send_led_update()
+{
     const uint8_t bit_offset = (num_keys == 12) ? 12 : (num_keys == 10) ? 16 : 8;
     uint8_t i;
     uint8_t data[8] = {0};
 
     for (i = 0; i < num_keys; i++) {
-        uint8_t color, offset;
+        uint8_t color = bk_get_key_led(i);
+        uint8_t offset = i;
 
-        if (led_state[i].pattern & phase_mask) {
-            color = led_state[i].color_b;
-        } else {
-            color = led_state[i].color_a;
-        }
-        offset = i;
         if (color & BK_RED) {
             data[offset / 8] |= 1 << (offset % 8);
         }
@@ -251,7 +259,6 @@ static void
 bk_thread(struct pt *pt)
 {
     static timer_t      blink_timer;
-    static uint8_t      blink_phase;
 
     pt_begin(pt);
     timer_register(blink_timer);
@@ -310,7 +317,7 @@ bk_thread(struct pt *pt)
                 timer_reset(blink_timer, BK_BLINK_PERIOD_MS);
                 blink_phase = (blink_phase + 1) & 0x7;
             }
-            bk_send_led_update(blink_phase);
+            bk_send_led_update();
             
             if (update_flags & UPDATE_INTENSITY) {
                 bk_send_intensity_update();

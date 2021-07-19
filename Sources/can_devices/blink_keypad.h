@@ -99,6 +99,14 @@ extern uint8_t bk_get_key_event(uint8_t key);
 extern void bk_set_key_led(uint8_t key, uint8_t colors, uint8_t pattern);
 
 /**
+ * Get the instant state of a key LED.
+ * 
+ * @param key
+ * @returns				A color code indicating what the LED is doing right now.
+ */
+extern uint8_t bk_get_key_led(uint8_t key);
+
+/**
  * Set key LED brightness.
  * 
  * @param intensity     Key LED intensity (0-0x3f)
