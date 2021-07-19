@@ -30,15 +30,6 @@
 #define APPLET_INIT	hsd_calibration_init
 #define APPLET_LOOP hsd_calibration_loop
 
-#ifdef TARGET_7L
-#error No current sense on Microplex 7L
-#endif
-#ifdef TARGET_7X
-#define NUM_CHANNELS			4
-#endif
-#ifdef TARGET_7H
-#define NUM_CHANNELS			7
-#endif
 #define EE_CAL_BASE_1A			(IEE1_AREA_START + 0xc8)
 #define EE_CAL_BASE_2_5A		(IEE1_AREA_START + 0xd8)
 #define EE_CAL_BASE_10V			(IEE1_AREA_START + 0xe8)
@@ -63,22 +54,17 @@ static const uint8_t hsd_cs_channels[] = {
         AI_CS_2,
         AI_CS_3,
         AI_CS_4,
-#ifdef TARGET_7H
         AI_CS_5,
         AI_CS_6,
         AI_CS_7
-#endif
 };
 
-#ifdef TARGET_7X
 static const uint8_t hsd_vs_channels[] = {
 		AI_OP_1,
 		AI_OP_2,
 		AI_OP_3,
 		AI_OP_4
 };
-#define HSD_VS_CHANNEL	0x80
-#endif
 
 static uint16_t hsd_samples[NUM_SAMPLES];
 static uint8_t hsd_sample_index;
@@ -87,16 +73,26 @@ static uint8_t hsd_sample_index;
 void
 hsd_calibration_init(void)
 {
+	if (mrs_module_type == 'L') {
+		print("No current / voltage sense on 7L");
+		for (;;) {}
+	}
+	
     print("HSD calibration ...");
     (void)PWM_1_Disable();
     (void)PWM_2_Disable();
     (void)PWM_3_Disable();
     (void)PWM_4_Disable();
-#ifdef TARGET_7H
-    (void)PWM_5_Disable();
-    (void)PWM_6_Disable();
-    (void)PWM_7_Disable();
-#endif    
+    if (mrs_module_type == 'H') {
+    	(void)PWM_5_Disable();
+    	(void)PWM_6_Disable();
+    	(void)PWM_7_Disable();
+    	DO_HSD_SEN1_ClrVal();
+    	DO_HSD_SEN2_ClrVal();
+    }
+    if (mrs_module_type == 'H') {
+    	DO_HSD_SEN_ClrVal();
+    }
     print("    init done.");
 }
 
@@ -114,16 +110,11 @@ select_channel(uint8_t channel)
     (void)PWM_2_ClrValue();
     (void)PWM_3_ClrValue();
     (void)PWM_4_ClrValue();
-#ifdef TARGET_7H
-    (void)PWM_5_ClrValue();
-    (void)PWM_6_ClrValue();
-    (void)PWM_7_ClrValue();
-	DO_HSD_SEN1_ClrVal();
-	DO_HSD_SEN2_ClrVal();
-#endif
-#ifdef TARGET_7X
-    DO_HSD_SEN_ClrVal();
-#endif
+    if (mrs_module_type == 'H') {
+    	(void)PWM_5_ClrValue();
+    	(void)PWM_6_ClrValue();
+    	(void)PWM_7_ClrValue();
+    }
     
     switch (channel) {
     case 0:
@@ -138,7 +129,6 @@ select_channel(uint8_t channel)
     case 3:
         PWM_4_SetValue();
         break;
-#ifdef TARGET_7H
     case 4:
         PWM_5_SetValue();
         break;
@@ -148,7 +138,6 @@ select_channel(uint8_t channel)
     case 6:
         PWM_7_SetValue();
         break;
-#endif
     }
 }
 
@@ -215,12 +204,9 @@ sample_channel(uint8_t channel)
 	uint16_t value;
 	uint8_t adc_channel;
 
-#ifdef TARGET_7X
 	if (channel & HSD_VS_CHANNEL) {
 		adc_channel = hsd_vs_channels[channel - HSD_VS_CHANNEL];
-	} else
-#endif
-	{
+	} else {
 		adc_channel = hsd_cs_channels[channel];
 	}
 	
@@ -241,18 +227,17 @@ hsd_calibration_thread(struct pt *pt)
     static uint8_t  current_channel;
     static timer_t  sample_timer;
     static uint16_t stable_value;
+    static uint8_t num_channels;
 
     pt_begin(pt);
+    num_channels = (mrs_module_type == 'X') ? 4 : 7;
     timer_register(sample_timer);
+    
     print("HSD calibration starting");
     (void)AD1_Stop();
     // Do initial calibration setup for 1A
     //
-    print("Connect load to HSD_1 and calibrate for 1A"
-#ifdef TARGET_7X
-    		" and 10V"
-#endif
-    		".");
+    print("Connect load to HSD_1 and calibrate for 1A%s.", (mrs_module_type == 'X') ? " and 10V" : "");
     select_channel(0);
     sample_reset();
     do {
@@ -267,7 +252,7 @@ hsd_calibration_thread(struct pt *pt)
     
     // Calibrate channels at 1A and 10V (7X only)
     for (current_channel = 0; 
-    		current_channel < (sizeof(hsd_cs_channels) / sizeof(hsd_cs_channels[0]));
+    		current_channel < num_channels;
     		current_channel++) {
         
         print("Connect 1A load to HSD_%d...", current_channel + 1);
@@ -283,18 +268,18 @@ hsd_calibration_thread(struct pt *pt)
         } while (!timer_expired(sample_timer));
         print("CS%d: %d", current_channel + 1, stable_value);
         (void)IEE1_SetWord(EE_CAL_BASE_1A + 2 * current_channel, stable_value);
-#ifdef TARGET_7X
-        do {
-        	pt_yield(pt);
-        	sample_channel(current_channel + HSD_VS_CHANNEL);
-        	stable_value = sample_plausible(AD_10V_PLAUSIBLE_MIN, AD_10V_PLAUSIBLE_MAX);
-            if (stable_value == 0) {
-                timer_reset(sample_timer, SETTLE_TIME_MS);
-            }
-        } while (!timer_expired(sample_timer));
-        print("OP%d: %d", current_channel + 1, stable_value);
-        (void)IEE1_SetWord(EE_CAL_BASE_10V + 2 * current_channel, stable_value);
-#endif
+        if (mrs_module_type == 'X') {
+			do {
+				pt_yield(pt);
+				sample_channel(current_channel + HSD_VS_CHANNEL);
+				stable_value = sample_plausible(AD_10V_PLAUSIBLE_MIN, AD_10V_PLAUSIBLE_MAX);
+				if (stable_value == 0) {
+					timer_reset(sample_timer, SETTLE_TIME_MS);
+				}
+			} while (!timer_expired(sample_timer));
+			print("OP%d: %d", current_channel + 1, stable_value);
+			(void)IEE1_SetWord(EE_CAL_BASE_10V + 2 * current_channel, stable_value);
+        }
     }
     // Do initial calibration setup for 2.5
     //
@@ -315,7 +300,7 @@ hsd_calibration_thread(struct pt *pt)
     
     // Calibrate channels at 2.5A
     for (current_channel = 0; 
-    		current_channel < (sizeof(hsd_cs_channels) / sizeof(hsd_cs_channels[0]));
+    		current_channel < num_channels;
     		current_channel++) {        
         print("Connect 2.5A load to HSD_%d...", current_channel + 1);
         select_channel(current_channel);
@@ -334,7 +319,7 @@ hsd_calibration_thread(struct pt *pt)
     
     print("");
     print("Calibration summary:");
-    for (current_channel = 0; current_channel < 8; current_channel++) {
+    for (current_channel = 0; current_channel < num_channels; current_channel++) {
     	uint16_t cal_1A, cal_2_5A, cal_10V;
     	
     	(void)IEE1_GetWord(EE_CAL_BASE_1A + 2 * current_channel, &cal_1A);

@@ -30,6 +30,9 @@
 
 #define	MRS_PARAM_BASE    IEE1_AREA_START
 
+const mrs_parameters_t 	mrs_parameters @(MRS_PARAM_BASE + 2);
+const char				mrs_module_type @(MRS_PARAM_BASE + 43);
+
 static bool     mrs_module_selected = FALSE;
 static bool     mrs_eeprom_write_enable = FALSE;
 

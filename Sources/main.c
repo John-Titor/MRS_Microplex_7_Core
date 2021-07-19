@@ -89,17 +89,17 @@ void main(void)
     can_reinit(mrs_can_bitrate());
 
     // Print / trace work now.
-    print("start");
+    print("start %c", mrs_module_type);
     can_trace(0xff);
 
     // Disable PWM mode on 7X non-PWM outputs
-#ifdef TARGET_7X
-    // XXX TODO flip PWM_5 over to frequency-capture mode somehow.
-    (void)PWM_6_Disable();
-    AI_3_PU_ClrVal();
-    (void)PWM_7_Disable();
-    DO_20MA_1_ClrVal();
-#endif // TARGET_7X
+    if (mrs_module_type == 'X') {
+		// XXX TODO flip PWM_5 over to frequency-capture mode somehow.
+		(void)PWM_6_Disable();
+		AI_3_PU_ClrVal();
+		(void)PWM_7_Disable();
+		DO_20MA_1_ClrVal();
+    }
     
     // Start the ADC in continuous mode.
     (void)AD1_Start();
