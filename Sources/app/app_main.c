@@ -13,6 +13,8 @@
 //#include <app/applets/interrupt_load_test.h>
 
 #include <app/micropdm/button.h>
+#include <app/micropdm/output.h>
+#include <app/micropdm/pdm_can.h>
 
 /**
  * Called once at startup.
@@ -24,6 +26,7 @@ app_init()
 	APPLET_INIT();
 #else
 	button_init();
+	output_init();
 #endif
 }
 
@@ -41,6 +44,7 @@ app_loop()
 	APPLET_LOOP();
 #else
 	button_loop();
+	pdm_can_loop();
 #endif
 }
 

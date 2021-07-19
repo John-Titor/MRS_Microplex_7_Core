@@ -14,6 +14,7 @@
 #include <can_devices/blink_keypad.h>
 
 #include <app/micropdm/button.h>
+#include <app/micropdm/output.h>
 
 /**  
  * EEPROM config structure
@@ -91,7 +92,6 @@ static void		button_save_state(void);
 static bool		button_check_KL15(void);
 static void		button_set_output(uint8_t output, bool state);
 static void		button_behaviour_timeout(uint8_t button);
-static void		button_set_state(uint8_t button, bool new_state);
 static void		button_enter_mode(uint8_t mode);
 static void		button_standby_loop(void);
 static void		button_config_loop(void);
@@ -277,9 +277,20 @@ button_check_KL15(void)
 static void
 button_set_output(uint8_t output, bool state)
 {
-	// set output to state
-	(void)output;
-	(void)state;
+	// do nothing if output not configured
+	if (output == OUTPUT_NONE) {
+		// do nothing
+	}
+	
+	// outputs 1-7 are local outputs
+	else if (output <= 7) {
+		output_set_local(output - 1, state);
+	} 
+	
+	// otherwise command a non-local output
+	else {
+		pdm_can_set_extender(output - 7, state);
+	}
 }
 
 /**
@@ -374,11 +385,40 @@ button_behaviour_timeout(uint8_t button)
 
 /**
  * Set a new state for a button.
+ * 
+ * May be called from the CAN message parser.
  */
-static void
+void
 button_set_state(uint8_t button, bool new_state)
 {
 	uint8_t	color;
+	
+	// Reject illegal button indices
+	if (button >= MAX_BUTTONS) {
+		return;
+	}
+	
+	// Reject button state changes unless the system is in
+	// operation mode, or it's a turn-off request in 
+	// shutdown-delay mode.
+	switch (system_mode) {
+	case MODE_OPERATION:
+		break;
+	case MODE_SHUTDOWN_DELAY:
+		if (new_state != FALSE) {
+			return;
+		}
+		break;
+	default:
+		return;
+	}
+	
+	// If the new state doesn't reflect a change from off to not-off,
+	// or not-off to off, ignore it.
+	if ((new_state && state[button].state)
+		|| (!new_state && !state[button].state)) {
+		return;
+	}
 	
 	// button state is initially 0 / 1, may change due to behaviour
 	state[button].state = new_state ? 1 : 0;
@@ -407,6 +447,12 @@ button_set_state(uint8_t button, bool new_state)
 
 	// trigger the behaviour timeout to set the output
 	button_behaviour_timeout(button);
+}
+
+bool
+button_get_state(uint8_t button)
+{
+	return state[button].state != 0;
 }
 
 static void
@@ -763,7 +809,6 @@ button_operation_loop(void)
 			}
 		}
 	}
-
 }
 
 /**

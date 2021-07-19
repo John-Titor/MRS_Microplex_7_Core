@@ -83,5 +83,7 @@ typedef struct {
 
 extern void			button_init(void);
 extern void			button_loop(void);
+extern void			button_set_state(uint8_t button, bool new_state);
+extern bool			button_get_state(uint8_t button);
 
 #endif /* BUTTON_H_ */
