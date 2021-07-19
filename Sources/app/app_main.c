@@ -12,6 +12,8 @@
 //#include <app/applets/hsd_calibration.h>
 //#include <app/applets/interrupt_load_test.h>
 
+#include <app/micropdm/button.h>
+
 /**
  * Called once at startup.
  */
@@ -20,6 +22,8 @@ app_init()
 {
 #ifdef APPLET_INIT
 	APPLET_INIT();
+#else
+	button_init();
 #endif
 }
 
@@ -35,6 +39,8 @@ app_loop()
 {
 #ifdef APPLET_LOOP
 	APPLET_LOOP();
+#else
+	button_loop();
 #endif
 }
 
