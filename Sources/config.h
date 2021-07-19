@@ -56,6 +56,8 @@
 #define BK_BLINK_PERIOD_MS      250     // time per pattern bit
 #define BK_TICK_PERIOD_MS       25      // interval between ticks
 #define BK_SHORT_PRESS_TICKS    2       // delay before registering a short press
-#define BK_LONG_PRESS_TICKS     60      // delay before registering a long press
+#define BK_LONG_PRESS_1_TICKS   20      // delay before registering first long press
+#define BK_LONG_PRESS_2_TICKS   60      // delay before registering a long press
+#define BK_LONG_PRESS_3_TICKS  120      // delay before registering a long press
 
 #endif // _CONFIG_H

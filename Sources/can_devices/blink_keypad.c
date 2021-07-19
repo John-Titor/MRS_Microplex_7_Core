@@ -62,6 +62,12 @@ bk_loop(void)
     bk_thread(&bk_pt);
 }
 
+uint8_t
+bk_num_keys(void)
+{
+	return num_keys;
+}
+
 bool
 bk_can_receive(can_buf_t *buf)
 {
@@ -141,19 +147,15 @@ bk_get_event(void)
     // scan key state & look for un-reported state changes
     for (i = 0; i < num_keys; i++) {
         
-        if (key_state[i].counter >= BK_LONG_PRESS_TICKS) {
-            current_state = BK_EVENT_LONG_PRESS;
-        } else if (key_state[i].counter >= BK_SHORT_PRESS_TICKS) {
-            current_state = BK_EVENT_SHORT_PRESS;
-        } else {
-            current_state = BK_EVENT_RELEASE;
+    	// get the most recent event that occurred for the key
+    	current_state = bk_get_key_event(i);
+
+        // always report state transitions in order, don't skip any
+    	if (current_state > key_state[i].reported_state) {
+        	current_state = key_state[i].reported_state + 0x10;
         }
         if (current_state != key_state[i].reported_state) {
-            // always report SHORT_PRESS before LONG_PRESS
-            if ((key_state[i].reported_state == BK_EVENT_RELEASE) 
-                    && (current_state == BK_EVENT_LONG_PRESS)) {
-                current_state = BK_EVENT_SHORT_PRESS;
-            }
+        	// report a change of state
             break;
         }
     }
@@ -167,10 +169,14 @@ bk_get_event(void)
 uint8_t
 bk_get_key_event(uint8_t key)
 {
-    if (key_state[key].counter >= BK_LONG_PRESS_TICKS) {
-        return BK_EVENT_LONG_PRESS;
+    if (key_state[key].counter >= BK_LONG_PRESS_3_TICKS) {
+        return BK_EVENT_LONG_PRESS_3;
+    } else if (key_state[key].counter >= BK_LONG_PRESS_2_TICKS) {
+    	return BK_EVENT_LONG_PRESS_2;
+    } else if (key_state[key].counter >= BK_LONG_PRESS_1_TICKS) {
+    	return BK_EVENT_LONG_PRESS_1;
     } else if (key_state[key].counter >= BK_SHORT_PRESS_TICKS) {
-        return BK_EVENT_SHORT_PRESS;
+    	return BK_EVENT_SHORT_PRESS;
     }
     return BK_EVENT_RELEASE;
 }

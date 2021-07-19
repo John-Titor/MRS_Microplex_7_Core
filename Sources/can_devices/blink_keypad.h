@@ -17,7 +17,9 @@
 #define BK_EVENT_NONE           0xff
 #define BK_EVENT_RELEASE        0x00
 #define BK_EVENT_SHORT_PRESS    0x10
-#define BK_EVENT_LONG_PRESS     0x20
+#define BK_EVENT_LONG_PRESS_1   0x20
+#define BK_EVENT_LONG_PRESS_2	0x30
+#define BK_EVENT_LONG_PRESS_3	0x40
 #define BK_EVENT_MASK           0xf0
 #define BK_KEY_MASK             0x0f
 
@@ -45,6 +47,14 @@ extern void bk_init(void);
  * Call to run the keypad logic.
  */
 extern void bk_loop(void);
+
+/**
+ * Get the number of keys on the keypad.
+ *  
+ * @return				The number of keys on the keypad. Zero
+ * 						if a keypad has not been detected.
+ */
+extern uint8_t bk_num_keys(void);
 
 /**
  * Feed a received CAN message to the keypad handler.
