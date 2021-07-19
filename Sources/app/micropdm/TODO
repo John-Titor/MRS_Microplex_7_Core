@@ -1,0 +1,16 @@
+Functionality and features:
+  ☐ power down in standby mode when KL15 goes away
+  ☐ configure over CAN
+  ☐ use calibration data
+
+Enhancements:
+  ☐ smart(er) port current monitoring
+  ☐ pwm output
+
+Test tool:
+  ☐ console
+  ☐ remote button press/release
+  ☐ status display
+
+Questions:
+  - How does multiple-switches-one-output work?
