@@ -1,7 +1,19 @@
-Functionality and features:
+Missing functionality for parity:
   ☐ power down in standby mode when KL15 goes away
   ☐ configure over CAN
+    ☐ how does this work? force button off?
+  ☐ bus speed change over CAN
   ☐ use calibration data
+  ☐ multiple buttons -> 1 output
+    ☐ how does this work? OR of all buttons? example implies low/high can be implemented
+  ☐ ignition button 'breathe' in Standby
+  ☐ suppress CAN output in Standby
+
+Bugs:
+  ✘ 'smart' flashing doesn't play well with the backlight @cancelled (21-07-19 21:38)
+    - you can't turn a key "off" while the backlight is on, you just get the backlight color instead, so flashing magenta with a magenta backlight is just solid magenta
+    - so don't; use explicit key settings instead
+
 
 Enhancements:
   ☐ smart(er) port current monitoring
