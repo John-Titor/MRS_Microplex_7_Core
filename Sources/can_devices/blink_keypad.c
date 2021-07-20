@@ -71,6 +71,26 @@ bk_num_keys(void)
 }
 
 bool
+bk_can_filter(can_buf_t *buf)
+{
+	// if we don't have a keypad ID the only thing we want is a boot message
+    if (keypad_id == 0xff) {
+        if ((buf->id >= 0x700) && (buf->id <= 0x77f)) {
+        	return TRUE;
+        }
+        return FALSE;
+    }
+    
+    // filter messages of interest
+    switch (buf->id - keypad_id) {
+    case 0x580:
+    case 0x180:
+    	return TRUE;
+    }
+    return FALSE;
+}
+
+bool
 bk_can_receive(can_buf_t *buf)
 {
     uint8_t     i;

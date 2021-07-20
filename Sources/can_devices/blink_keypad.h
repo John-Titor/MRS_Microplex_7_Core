@@ -57,6 +57,11 @@ extern void bk_loop(void);
 extern uint8_t bk_num_keys(void);
 
 /**
+ * Sniff a CAN message and decide whether we're interested in it.
+ */
+extern bool bk_can_filter(can_buf_t *buf);
+
+/**
  * Feed a received CAN message to the keypad handler.
  * 
  * Should be called from app_can_receive for any message that
