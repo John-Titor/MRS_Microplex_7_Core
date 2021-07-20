@@ -15,6 +15,8 @@ static void
 blink_keypad_test_init()
 {
 	bk_init();
+	bk_set_backlight_color(BK_BL_COLOR_MAGENTA);
+	bk_set_backlight_intensity(0x20);
 }
 
 static void 
@@ -29,23 +31,23 @@ blink_keypad_test_loop(void)
         switch (event) {
         case BK_EVENT_RELEASE:
             print("key %d released", key);
-            bk_set_key_led(key, BK_OFF, 0);
+            bk_set_key_led(key, BK_KEY_COLOR_OFF, 0);
             break;
         case BK_EVENT_SHORT_PRESS:
             print("key %d short press", key);
-            bk_set_key_led(key, BK_GREEN, 0);
+            bk_set_key_led(key, BK_KEY_COLOR_GREEN, 0);
             break;
         case BK_EVENT_LONG_PRESS_1:
             print("key %d long press 1", key);
-            bk_set_key_led(key, BK_BLUE, 0xaa);
+            bk_set_key_led(key, BK_KEY_COLOR_BLUE, 0xaa);
             break;
         case BK_EVENT_LONG_PRESS_2:
             print("key %d long press 2", key);
-            bk_set_key_led(key, BK_CYAN, 0xaa);
+            bk_set_key_led(key, BK_KEY_COLOR_CYAN, 0xaa);
             break;
         case BK_EVENT_LONG_PRESS_3:
             print("key %d long press 3", key);
-            bk_set_key_led(key, BK_MAGENTA, 0xaa);
+            bk_set_key_led(key, BK_KEY_COLOR_MAGENTA, 0xaa);
             break;
         }
     }

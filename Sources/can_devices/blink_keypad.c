@@ -30,6 +30,7 @@ static struct {
 
 static uint8_t          num_keys;
 static uint8_t          keypad_id = BK_DEFAULT_KEYPAD_ID;          
+static uint8_t			backlight_color;
 static uint8_t          backlight_intensity;
 static uint8_t          key_intensity;
 static uint8_t          update_flags;
@@ -220,6 +221,12 @@ bk_set_key_intensity(uint8_t intensity)
 }
 
 void
+bk_set_backlight_color(uint8_t color)
+{
+	backlight_color = color & BK_COLOR_MASK;
+}
+
+void
 bk_set_backlight_intensity(uint8_t intensity)
 {
     backlight_intensity = intensity & BK_MAX_INTENSITY;
@@ -249,15 +256,15 @@ bk_send_led_update()
         uint8_t color = bk_get_key_led(i);
         uint8_t offset = i;
 
-        if (color & BK_RED) {
+        if (color & BK_KEY_COLOR_RED) {
             data[offset / 8] |= 1 << (offset % 8);
         }
         offset += bit_offset;
-        if (color & BK_GREEN) {
+        if (color & BK_KEY_COLOR_GREEN) {
             data[offset / 8] |= 1 << (offset % 8);
         }
         offset += bit_offset;
-        if (color & BK_BLUE) {
+        if (color & BK_KEY_COLOR_BLUE) {
             data[offset / 8] |= 1 << (offset % 8);
         }
     }
@@ -267,12 +274,19 @@ bk_send_led_update()
 static void
 bk_send_intensity_update()
 {
-    uint8_t data[8] = {0};
+    uint8_t data[8] = {0x23, 0x00, 0x65, 0x01 };
     
-    data[0] = key_intensity;
-    can_tx_async(0x400 + keypad_id, sizeof(data), data);
-    data[0] = backlight_intensity;
-    can_tx_async(0x500 + keypad_id, sizeof(data), data);
+    data[4] = 0x02;
+    data[5] = key_intensity;
+    can_tx_async(0x600 + keypad_id, sizeof(data), data);
+
+    data[4] = 0x03; 
+    data[5] = backlight_intensity;
+    can_tx_async(0x600 + keypad_id, sizeof(data), data);
+
+    data[4] = 0x04; 
+    data[5] = backlight_color;
+    can_tx_async(0x600 + keypad_id, sizeof(data), data);
 }
 
 static void
@@ -333,16 +347,15 @@ bk_thread(struct pt *pt)
             // for a new animation iteration or because an LED state change was
             // requested.
             pt_wait(pt, timer_expired(blink_timer) || (update_flags & UPDATE_KEYS));
+            update_flags = 0;
             if (timer_expired(blink_timer)) {
                 timer_reset(blink_timer, BK_BLINK_PERIOD_MS);
                 blink_phase = (blink_phase + 1) & 0x7;
             }
             bk_send_led_update();
             
-            if (update_flags & UPDATE_INTENSITY) {
-                bk_send_intensity_update();
-            }
-            update_flags = 0;
+            // this is kind of spammy, may want to be frugal with it
+            bk_send_intensity_update();
             
             // if the keypad disappears, release every key
             if (timer_expired(bk_idle_timer)) {

@@ -24,16 +24,30 @@
 #define BK_KEY_MASK             0x0f
 
 /**
- * Color codes.
+ * Backlight color codes.
  */
-#define BK_OFF                  0x0
-#define BK_RED                  0x1
-#define BK_GREEN                0x2
-#define BK_BLUE                 0x4
-#define BK_YELLOW               (BK_RED | BK_GREEN)
-#define BK_CYAN                 (BK_GREEN | BK_BLUE)
-#define BK_MAGENTA              (BK_RED | BK_BLUE)
-#define BK_WHITE                (BK_RED | BK_GREEN | BK_BLUE)
+#define BK_BL_COLOR_OFF			0x0
+#define BK_BL_COLOR_RED			0x1
+#define BK_BL_COLOR_GREEN		0x2
+#define BK_BL_COLOR_BLUE		0x3
+#define BK_BL_COLOR_YELLOW		0x4
+#define BK_BL_COLOR_CYAN		0x5
+#define BK_BL_COLOR_MAGENTA		0x6
+#define BK_BL_COLOR_WHITE		0x7
+#define BK_BL_COLOR_AMBER		0x8
+#define BK_BL_COLOR_TEAL		0x9
+
+/**
+ * Key color codes.
+ */
+#define BK_KEY_COLOR_OFF        0x0
+#define BK_KEY_COLOR_RED        0x1
+#define BK_KEY_COLOR_GREEN      0x2
+#define BK_KEY_COLOR_BLUE       0x4
+#define BK_KEY_COLOR_YELLOW     (BK_KEY_COLOR_RED | BK_KEY_COLOR_GREEN)
+#define BK_KEY_COLOR_CYAN       (BK_KEY_COLOR_GREEN | BK_KEY_COLOR_BLUE)
+#define BK_KEY_COLOR_MAGENTA    (BK_KEY_COLOR_RED | BK_KEY_COLOR_BLUE)
+#define BK_KEY_COLOR_WHITE      (BK_KEY_COLOR_RED | BK_KEY_COLOR_GREEN | BK_KEY_COLOR_BLUE)
 #define BK_COLOR_MASK           0xf
 
 #define BK_MAX_INTENSITY    0x3f
@@ -117,6 +131,11 @@ extern uint8_t bk_get_key_led(uint8_t key);
  * @param intensity     Key LED intensity (0-0x3f)
  */
 extern void bk_set_key_intensity(uint8_t intensity);
+
+/**
+ * Set the backlight color.
+ */
+extern void bk_set_backlight_color(uint8_t color);
 
 /**
  * Set the backlight brightness.
