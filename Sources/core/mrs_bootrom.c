@@ -117,21 +117,22 @@ mrs_dispatch_handler(const mrs_bootrom_handler_t *handler, uint8_t table_len, ca
     return FALSE;
 }
 
-void
+bool
 mrs_bootrom_rx(can_buf_t *buf)
 {
     if (mrs_dispatch_handler(unselected_handlers, 
                              sizeof(unselected_handlers) / sizeof(mrs_bootrom_handler_t),
                              buf)) {
-        return;
+        return TRUE;
     }
     if (mrs_module_selected
             && mrs_dispatch_handler(selected_handlers, 
                                     sizeof(selected_handlers) / sizeof(mrs_bootrom_handler_t),
                                     buf)) {
-        return;
+        return TRUE;
     }
     can_trace(TRACE_MRS_BADMSG);
+    return FALSE;
 }
 
 void

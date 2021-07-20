@@ -229,21 +229,16 @@ can_listen(struct pt *pt)
             // Handle MRS flasher messages directly.
             if ((buf->id & MRS_ID_MASK) == MRS_ID_MASK) {
                 can_trace(TRACE_CAN_MRS_RX);
-                mrs_bootrom_rx(buf);
+                if (mrs_bootrom_rx(buf)) {
+                	goto handled;
+                }
             }
-
-#ifdef CONFIG_WITH_BLINK_KEYPAD
-            else if (bk_can_receive(buf)) {
-                // keypad driver absorbed the packet
-            }
-#endif
 
             // Pass the message to the application.
-            else {
-                can_trace(TRACE_CAN_APP_RX);
-                app_can_receive(buf);
-            }
+			can_trace(TRACE_CAN_APP_RX);
+			app_can_receive(buf);
 
+handled:
             // mark the slot as free
             can_buf_tail++;
         }

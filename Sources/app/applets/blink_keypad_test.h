@@ -7,12 +7,14 @@
 
 #include <can_devices/blink_keypad.h>
 
-#define APPLET_INIT blink_keypad_test_init
-#define APPLET_LOOP	blink_keypad_test_loop
+#define APPLET_INIT			blink_keypad_test_init
+#define APPLET_LOOP			blink_keypad_test_loop
+#define APPLET_CAN_RECEIVE	blink_keypad_test_can_receive
 
 static void
 blink_keypad_test_init()
 {
+	bk_init();
 }
 
 static void 
@@ -47,4 +49,12 @@ blink_keypad_test_loop(void)
             break;
         }
     }
+    
+    bk_loop();
+}
+
+static void
+blink_keypad_test_can_receive(can_buf_t *buf)
+{
+	(void)bk_can_receive(buf);
 }

@@ -41,7 +41,7 @@ extern uint8_t   		mrs_can_bitrate(void);
 /**
  * MRS CAN flash protocol handler.
  */
-extern void             mrs_bootrom_rx(can_buf_t *buf);
+extern bool             mrs_bootrom_rx(can_buf_t *buf);
 
 /**
  * MRS EEPROM contents.

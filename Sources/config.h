@@ -48,7 +48,6 @@
 /*
  * Blink Marine keypad configuration 
  */
-#define CONFIG_WITH_BLINK_KEYPAD    1
 //#define BK_FIXED_KEYPAD_ID      0x15  // assume keypad ID
 #define BK_MAX_KEYS             12      // largest keypad supported
 #define BK_IDLE_TIMEOUT_MS      1000    // timeout before assuming keypad gone
