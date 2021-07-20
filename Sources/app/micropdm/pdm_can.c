@@ -18,6 +18,17 @@
 
 static uint8_t extender_state;
 
+bool
+pdm_can_filter(can_buf_t *buf)
+{
+	// native microPDM control messages
+	if ((buf->id == PDM_CMD_ID)
+		|| (buf->id == PDM_CTRL_ID)) {
+		return TRUE;
+	}
+	return FALSE;
+}
+
 void
 pdm_can_receive(can_buf_t *buf)
 {

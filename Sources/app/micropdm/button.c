@@ -14,6 +14,7 @@
 #include <can_devices/blink_keypad.h>
 
 #include <app/micropdm/button.h>
+#include <app/micropdm/pdm_can.h>
 #include <app/micropdm/output.h>
 
 /**  
