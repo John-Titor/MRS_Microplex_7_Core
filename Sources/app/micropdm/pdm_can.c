@@ -9,6 +9,7 @@
 
 #include <core/can.h>
 #include <core/io.h>
+#include <core/mrs_bootrom.h>
 
 #include <can_devices/blink_keypad.h>
 
@@ -83,7 +84,6 @@ pdm_can_send_button_report(void)
 	can_tx_async(0x322e13 | CAN_ID_EXT, 8, data);
 }
 
-#if defined(TARGET_7X) || defined(TARGET_7H)
 static void
 pdm_can_send_current_report(void)
 {
@@ -112,28 +112,27 @@ pdm_can_send_current_report(void)
 	
 	can_tx_async(0x322e14 | CAN_ID_EXT, 8, data);
 
-#if defined(TARGET_7H)
-	(void)AD1_GetChanValue16(AI_CS_5, &cval);
-	cval >>= 4;
-	data[0] = cval & 0xff;
-	data[1] = cval >> 8;
-
-	(void)AD1_GetChanValue16(AI_CS_6, &cval);
-	cval >>= 4;
-	data[2] = cval & 0xff;
-	data[3] = cval >> 8;
-
-	(void)AD1_GetChanValue16(AI_CS_7, &cval);
-	cval >>= 4;
-	data[4] = cval & 0xff;
-	data[5] = cval >> 8;
+	if (mrs_module_type == 'H') {
+		(void)AD1_GetChanValue16(AI_CS_5, &cval);
+		cval >>= 4;
+		data[0] = cval & 0xff;
+		data[1] = cval >> 8;
 	
-	data[6] = data[7] = 0;
+		(void)AD1_GetChanValue16(AI_CS_6, &cval);
+		cval >>= 4;
+		data[2] = cval & 0xff;
+		data[3] = cval >> 8;
 	
-	can_tx_async(0x322e15 | CAN_ID_EXT, 8, data);
-#endif // TARGET_7H	
+		(void)AD1_GetChanValue16(AI_CS_7, &cval);
+		cval >>= 4;
+		data[4] = cval & 0xff;
+		data[5] = cval >> 8;
+		
+		data[6] = data[7] = 0;
+		
+		can_tx_async(0x322e15 | CAN_ID_EXT, 8, data);
+	}
 }
-#endif // TARGET_7X || TARGET_7H
 
 static void
 pdm_can_send_extender_update(void)
@@ -164,8 +163,7 @@ pdm_can_loop(void)
 		pdm_can_send_extender_update();
 	}
 
-#if defined(TARGET_7X) || defined(TARGET_7H)
-	{
+	if ((mrs_module_type == 'X') || (mrs_module_type == 'H')) {
 		static timer_t	current_report;
 		timer_register(current_report);
 
@@ -174,7 +172,6 @@ pdm_can_loop(void)
 			pdm_can_send_current_report();
 		}
 	}
-#endif
 }
 
 void

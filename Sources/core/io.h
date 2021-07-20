@@ -76,20 +76,19 @@
 #include <DO_30V_10V_2.h>
 #include <DO_30V_10V_3.h>
 
-#define AI_3_PU_SetVal		(void)PWM_6_SetValue	// 7X
-#define AI_3_PU_ClrVal		(void)PWM_6_ClrValue	// 7X
-#define DO_20MA_1_SetVal	(void)PWM_7_SetValue	// 7X
-#define DO_20MA_1_ClrVal	(void)PWM_7_ClrValue	// 7X
-#define DO_20MA_2_SetVal	DO_1_SetVal				// 7X
-#define DO_20MA_2_ClrVal	DO_1_ClrVal				// 7X
-#define DO_HSD_SEN_SetVal	DO_2_SetVal				// 7X
-#define DO_HSD_SEN_ClrVal	DO_2_ClrVal				// 7X
+#define AI_3_PU_SetVal()		(void)PWM_6_SetValue()	// 7X
+#define AI_3_PU_ClrVal()		(void)PWM_6_ClrValue()	// 7X
+#define DO_20MA_1_SetVal()		(void)PWM_7_SetValue()	// 7X
+#define DO_20MA_1_ClrVal()		(void)PWM_7_ClrValue()	// 7X
+#define DO_20MA_2_SetVal()		DO_1_SetVal()			// 7X
+#define DO_20MA_2_ClrVal()		DO_1_ClrVal()			// 7X
+#define DO_HSD_SEN_SetVal()		DO_2_SetVal()			// 7X
+#define DO_HSD_SEN_ClrVal()		DO_2_ClrVal()			// 7X
 
-#define DO_HSD_SEN2_SetVal	DO_1_SetVal				// 7H
-#define DO_HSD_SEN2_ClrVal	DO_1_ClrVal				// 7H
-#define DO_HSD_SEN1_SetVal	DO_2_SetVal				// 7H
-#define DO_HSD_SEN1_ClrVal	DO_2_ClrVal				// 7H
-
+#define DO_HSD_SEN2_SetVal()	DO_1_SetVal()			// 7H
+#define DO_HSD_SEN2_ClrVal()	DO_1_ClrVal()			// 7H
+#define DO_HSD_SEN1_SetVal()	DO_2_SetVal()			// 7H
+#define DO_HSD_SEN1_ClrVal()	DO_2_ClrVal()			// 7H
 
 #define AI_KL15		AD1_CHANNEL_KL15				// 7X, 7H, 7L
 #define AI_TEMP		AD1_CHANNEL_TEMP				// 7X, 7H, 7L

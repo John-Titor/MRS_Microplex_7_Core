@@ -9,6 +9,7 @@
 #include <AD1.h>
 
 #include <core/io.h>
+#include <core/mrs_bootrom.h>
 #include <core/pt.h>
 
 #include <can_devices/blink_keypad.h>
@@ -672,6 +673,12 @@ button_config_loop(void)
 		case CONFIG_MODE_VALUE:
 			if (++current_param_value >= button_get_param_limit(current_param)) {
 				current_param_value = 0;
+			}
+			// skip outputs 5/6/7 on 7X since they don't exist
+			if ((current_param == PARAM_OUTPUT)
+				&& (mrs_module_type == 'X')
+				&& (current_param_value == 5)) {
+				current_param_value += 3;
 			}
 			break;
 		}

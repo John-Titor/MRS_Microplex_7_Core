@@ -6,6 +6,7 @@
  */
 
 #include <core/io.h>
+#include <core/mrs_bootrom.h>
 
 #include <app/micropdm/output.h>
 #include <app/micropdm/pdm_can.h>
@@ -26,27 +27,21 @@ output_init(void)
 	(void)PWM_3_ClrValue();
 	(void)PWM_4_Disable();
 	(void)PWM_4_ClrValue();
-#ifdef TARGET_7X
-    DO_HSD_SEN_ClrVal();
-#endif
-#ifdef TARGET_7H
-    (void)PWM_5_Disable();
-    (void)PWM_5_ClrValue();
-    (void)PWM_6_Disable();
-    (void)PWM_6_ClrValue();
-    (void)PWM_7_Disable();
-    (void)PWM-7_ClrValue();
-    DO_HSD_SEN1_ClrVal();
-    DO_HSD_SEN2_ClrVal();
-#endif
-#ifdef TARGET_7L
-    (void)PWM_5_Disable();
-    (void)PWM_5_ClrValue();
-    (void)PWM_6_Disable();
-    (void)PWM_6_ClrValue();
-    (void)PWM_7_Disable();
-    (void)PWM_7_ClrValue();
-#endif
+	if ((mrs_module_type == 'H') || (mrs_module_type == 'L')) {	
+		(void)PWM_5_Disable();
+		(void)PWM_5_ClrValue();
+		(void)PWM_6_Disable();
+		(void)PWM_6_ClrValue();
+		(void)PWM_7_Disable();
+		(void)PWM_7_ClrValue();
+	}
+	if (mrs_module_type == 'X') {
+		DO_HSD_SEN_ClrVal();
+	}
+	if (mrs_module_type == 'H') {
+		DO_HSD_SEN1_ClrVal();
+		DO_HSD_SEN2_ClrVal();
+	}
 }
 
 void
@@ -96,23 +91,23 @@ output_update(void)
 	} else {
 		(void)PWM_4_ClrValue();
 	}
-#if defined(TARGET_7H) || defined(TARGET_7L)
-	if (state & (1 << 4)) {
-		(void)PWM_5_SetValue();		
-	} else {
-		(void)PWM_5_ClrValue();
+	if ((mrs_module_type == 'H') || (mrs_module_type == 'L')) {	
+		if (state & (1 << 4)) {
+			(void)PWM_5_SetValue();		
+		} else {
+			(void)PWM_5_ClrValue();
+		}
+		if (state & (1 << 5)) {
+			(void)PWM_6_SetValue();		
+		} else {
+			(void)PWM_6_ClrValue();
+		}
+		if (state & (1 << 6)) {
+			(void)PWM_7_SetValue();		
+		} else {
+			(void)PWM_7_ClrValue();
+		}
 	}
-	if (state & (1 << 5)) {
-		(void)PWM_6_SetValue();		
-	} else {
-		(void)PWM_6_ClrValue();
-	}
-	if (state & (1 << 6)) {
-		(void)PWM_7_SetValue();		
-	} else {
-		(void)PWM_7_ClrValue();
-	}
-#endif
 }
 
 uint8_t
