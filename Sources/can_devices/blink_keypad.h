@@ -53,6 +53,14 @@
 #define BK_MAX_INTENSITY    0x3f
 
 /**
+ * CAN bus speeds
+ */
+#define BK_SPEED_1000		0
+#define BK_SPEED_500		1
+#define BK_SPEED_250		2
+#define BK_SPEED_125		3
+
+/**
  * Initialize keypad support. 
  */
 extern void bk_init(void);
@@ -145,20 +153,10 @@ extern void bk_set_backlight_color(uint8_t color);
 extern void bk_set_backlight_intensity(uint8_t intensity);
 
 /**
- * Standalone keypad discover / configure routine.
+ * Set the keypad CAN speed
  * 
- * Call from app_init() to discover and configure a single Blink Marine
- * keypad.  Not not suitable for use at regular startup.
- * 
- * Sets the keypad to:
- *  - CANOpen mode
- *  - Current bootrom CAN speed
- *  - auto-start
- *  - boot-message enabled
- *  - short startup flash
- *  - configured announce interval
+ * Most useful when changing local CAN speed configuration at the same time.
  */
-void bk_configure(void);
-
+extern void bk_set_can_speed(uint8_t speed);
 
 #endif /* BLINK_KEYPAD_H_ */

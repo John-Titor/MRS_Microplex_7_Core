@@ -322,25 +322,33 @@ bk_thread(struct pt *pt)
                 continue;
             }
 
-            // Work out how many keys it has.
+            // Configure the keypad the way we like it, and along the way 
+            // learn how many keys it has.
             //
             // The only way to do this seems to be to read the Model ID
             // and parse out the x/y dimensions from the text. Insane.
             //
-            if (num_keys == 0) {
-                // We only read enough of the Model ID to get the name out.
-                static const uint8_t bk_get_model_id[8] = { 0x40, 0x0b, 0x10 };
-                static const uint8_t bk_get_next_register[8] = { 0x60 };
+            {
+            	static const uint8_t bk_init_messages[][8] = {
+            			{ 0x40, 0x0b, 0x10 },						// get model ID
+            			{ 0x60 },									// continue model ID
+            			{ 0x2b, 0x00, 0x18, 0x05, 25, 0 },			// 25ms announce interval
+            			{ 0x2f, 0x00, 0x21, 0x00, 0x00 },			// disable demo mode
+            			{ 0x2f, 0x14, 0x20, 0x00, 0x02 },			// fast flash only at startup
+            			{ 0x2f, 0x11, 0x20, 0x00, 0x01 },			// enable boot message
+            			{ 0x2f, 0x12, 0x20, 0x00, 0x01 }			// auto-start
+            	};
+            	uint8_t i;
 
-                can_tx_ordered(0x600 + keypad_id, sizeof(bk_get_model_id), bk_get_model_id);
-                pt_yield(pt);
-                can_tx_ordered(0x600 + keypad_id, sizeof(bk_get_next_register), bk_get_next_register);
-                continue;
+            	for (i = 0; i < (sizeof(bk_init_messages) / 8); i++) {
+            		can_tx_ordered(0x600 + keypad_id, 8, &bk_init_messages[i][0]);
+            		pt_yield(pt);
+            	}
             }
-
         } while ((num_keys == 0) || (keypad_id == 0xff));
 
         // we've found a keypad and we know how big it is, use it
+        print("keypad @ %x with %d keys", keypad_id, num_keys);
         for (;;) {
             
             // Wait until it's time to send an update; either because it's time
@@ -368,6 +376,28 @@ bk_thread(struct pt *pt)
         }
     }
     pt_end(pt);
+}
+
+void
+bk_set_can_speed(uint16_t kbps)
+{
+	uint8_t data[8] = { 0x2f, 0x10, 0x20 };
+	
+	switch (kbps) {
+	case BK_SPEED_1000:
+		data[4] = 0;
+		break;
+	case BK_SPEED_500:
+		data[4] = 2;
+		break;
+	case BK_SPEED_250:
+		data[4] = 3;
+		break;
+	case BK_SPEED_125:
+	default:
+		data[4] = 4;
+	}
+	can_tx_async(0x600 + keypad_id, sizeof(data), data);
 }
 
 static void
