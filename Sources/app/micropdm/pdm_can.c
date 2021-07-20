@@ -67,7 +67,7 @@ pdm_can_send_button_report(void)
 
 	// encode button & commanded output states
 	for (i = 0; i < MAX_BUTTONS; i++) {
-		bool led_state = (bk_get_key_led(i) != BK_OFF);
+		bool led_state = (bk_get_key_led(i) != BK_KEY_COLOR_OFF);
 		bool button_state = button_get_state(i);
 	
 		if (led_state & button_state) {

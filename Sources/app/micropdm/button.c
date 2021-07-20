@@ -44,6 +44,11 @@ static uint8_t			system_mode;
 #define MODE_OPERATION		2
 #define MODE_SHUTDOWN_DELAY	3
 
+#define KEY_INTENSITY_NORMAL		0x3f
+#define KEY_INTENSITY_DIM			0x20
+#define BACKLIGHT_INTENSITY_NORMAL	0x10
+#define BACKLIGHT_INTENSITY_DIM		0x08
+
 /**
  * Table of shutdown delay times corresponding to config.delayed_shutdown,
  * in seconds.
@@ -60,7 +65,7 @@ static const uint16_t shutdown_delays[] = {
 };
 
 /**
- * (Mostly) standard table of number -> color codes.
+ * (Mostly) standard table of number -> color codes for key LEDs.
  * 
  * Configured LED color codes are special; they are offset by 1 with
  * 0 being "off".
@@ -68,21 +73,21 @@ static const uint16_t shutdown_delays[] = {
  * Use these with a 50/50 duty cycle to get blinking behaviour.
  */
 static const uint8_t color_codes[] = {
-	BK_RED		| (BK_RED		<< 4),
-	BK_GREEN	| (BK_GREEN		<< 4),
-	BK_BLUE		| (BK_BLUE		<< 4),
-	BK_YELLOW	| (BK_YELLOW	<< 4),
-	BK_CYAN		| (BK_CYAN		<< 4),
-	BK_MAGENTA	| (BK_MAGENTA	<< 4),
-	BK_WHITE	| (BK_WHITE		<< 4),
-	BK_RED		| (BK_OFF		<< 4),
-	BK_GREEN	| (BK_OFF		<< 4),
-	BK_BLUE		| (BK_OFF		<< 4),
-	BK_YELLOW	| (BK_OFF		<< 4),
-	BK_CYAN		| (BK_OFF		<< 4),
-	BK_MAGENTA	| (BK_OFF		<< 4),
-	BK_WHITE	| (BK_OFF		<< 4),
-	BK_RED		| (BK_BLUE		<< 4)
+	BK_KEY_COLOR_RED	| (BK_KEY_COLOR_RED		<< 4),
+	BK_KEY_COLOR_GREEN	| (BK_KEY_COLOR_GREEN	<< 4),
+	BK_KEY_COLOR_BLUE	| (BK_KEY_COLOR_BLUE	<< 4),
+	BK_KEY_COLOR_YELLOW	| (BK_KEY_COLOR_YELLOW	<< 4),
+	BK_KEY_COLOR_CYAN	| (BK_KEY_COLOR_CYAN	<< 4),
+	BK_KEY_COLOR_MAGENTA| (BK_KEY_COLOR_MAGENTA	<< 4),
+	BK_KEY_COLOR_WHITE	| (BK_KEY_COLOR_WHITE	<< 4),
+	BK_KEY_COLOR_RED	| (BK_KEY_COLOR_OFF		<< 4),
+	BK_KEY_COLOR_GREEN	| (BK_KEY_COLOR_OFF		<< 4),
+	BK_KEY_COLOR_BLUE	| (BK_KEY_COLOR_OFF		<< 4),
+	BK_KEY_COLOR_YELLOW	| (BK_KEY_COLOR_OFF		<< 4),
+	BK_KEY_COLOR_CYAN	| (BK_KEY_COLOR_OFF		<< 4),
+	BK_KEY_COLOR_MAGENTA| (BK_KEY_COLOR_OFF		<< 4),
+	BK_KEY_COLOR_WHITE	| (BK_KEY_COLOR_OFF		<< 4),
+	BK_KEY_COLOR_RED	| (BK_KEY_COLOR_BLUE	<< 4)
 };
 
 static uint8_t	button_get_param_limit(uint8_t param);
@@ -373,11 +378,13 @@ button_behaviour_timeout(uint8_t button)
 		
 	case BEHAVIOUR_NIGHT_MODE:
 		if (state[button].state == 1) {
-			bk_set_key_intensity(0x18);
-			bk_set_backlight_intensity(0x10);
+			bk_set_key_intensity(KEY_INTENSITY_DIM);
+			bk_set_backlight_intensity(BACKLIGHT_INTENSITY_DIM);
+			bk_set_backlight_color(BK_BL_COLOR_AMBER);
 		} else {
-			bk_set_key_intensity(0x3f);
-			bk_set_backlight_intensity(0x00);
+			bk_set_key_intensity(KEY_INTENSITY_NORMAL);
+			bk_set_backlight_intensity(BACKLIGHT_INTENSITY_NORMAL);
+			bk_set_backlight_color(BK_BL_COLOR_OFF);
 		}
 		break;
 	}
@@ -430,7 +437,7 @@ button_set_state(uint8_t button, bool new_state)
 	if (state[button].state) {
 		uint8_t on_color = button_get_param(button, PARAM_ON_COLOR);
 		if (on_color == 0) {
-			color = BK_OFF;
+			color = BK_KEY_COLOR_OFF;
 		} else {
 			color = color_codes[on_color - 1];
 		}
@@ -438,7 +445,7 @@ button_set_state(uint8_t button, bool new_state)
 		uint8_t off_color = button_get_param(button, PARAM_OFF_COLOR);
 		if ((system_mode != MODE_OPERATION)
 				|| (off_color == 0)) {
-			color = BK_OFF;
+			color = BK_KEY_COLOR_OFF;
 		} else {
 			color = color_codes[off_color - 1];
 		}
@@ -464,7 +471,7 @@ button_enter_mode(uint8_t mode)
 
 	// set new mode first
 	system_mode = mode;
-	
+
 	// now perform mode-entry actions
 	switch (system_mode) {
 	case MODE_STANDBY:
@@ -474,16 +481,16 @@ button_enter_mode(uint8_t mode)
 			if (button_get_param(i, PARAM_BEHAVIOUR) == BEHAVIOUR_IGNITION_MODE) {
 				// not quite the same as the original, would need to ramp brightness
 				// in the standby mode loop to get it to breathe
-				bk_set_key_led(i, BK_WHITE, 0x05);
+				bk_set_key_led(i, BK_KEY_COLOR_WHITE, 0x05);
 			}
 		}
 		break;
 
 	case MODE_CONFIG:
 		print("config");
-		bk_set_key_led(0, BK_WHITE, 0);
+		bk_set_key_led(0, BK_KEY_COLOR_WHITE, 0);
 		for (i = 1; i < MAX_BUTTONS; i++) {
-			bk_set_key_led(i, BK_GREEN, 0);
+			bk_set_key_led(i, BK_KEY_COLOR_GREEN, 0);
 		}
 		break;
 
@@ -526,7 +533,6 @@ void
 button_standby_loop(void)
 {
 	static bool 	chord_detected;
-	uint8_t			i;
 	
 	// Is KL15 off? Maybe go to configuration mode depending on
 	// button chord.
@@ -537,11 +543,9 @@ button_standby_loop(void)
 			&& (bk_get_key_event(1) >= BK_EVENT_LONG_PRESS_2)
 			&& (bk_get_key_event(2) >= BK_EVENT_LONG_PRESS_2)) {
 		
-			// yes, set all key LEDs to green
+			// yes, set backlight to green and max brightness
 			chord_detected = TRUE;
-			for (i = 0; i < MAX_BUTTONS; i++) {
-				bk_set_key_led(i, BK_GREEN, 0);
-			}
+			bk_set_backlight_color(BK_BL_COLOR_GREEN);
 		}
 		
 		// buttons all released after long-press detected?
@@ -550,11 +554,9 @@ button_standby_loop(void)
 			&& (bk_get_key_event(1) == BK_EVENT_RELEASE)
 			&& (bk_get_key_event(2) == BK_EVENT_RELEASE)) {
 
-			// yes, turn off all LEDs and go to config mode
+			// yes, turn off all backlight and go to config mode
 			chord_detected = FALSE;
-			for (i = 0; i < MAX_BUTTONS; i++) {
-				bk_set_key_led(i, BK_OFF, 0);
-			}
+			bk_set_backlight_color(BK_BL_COLOR_OFF);
 			button_enter_mode(MODE_CONFIG);
 		}
 	}
@@ -627,10 +629,11 @@ button_config_loop(void)
 		current_param = 0;
 		mode = CONFIG_MODE_BUTTON;
 		
-		// turn off LEDs
+		// turn off LEDs and backlight
 		for (i = 0; i < MAX_BUTTONS; i++) {
-			bk_set_key_led(i, BK_OFF, 0);
+			bk_set_key_led(i, BK_KEY_COLOR_OFF, 0);
 		}
+		bk_set_backlight_color(BK_BL_COLOR_OFF);
 		
 		button_enter_mode(MODE_STANDBY);
 		return;
@@ -639,21 +642,19 @@ button_config_loop(void)
 	// handle other button presses
 	switch (event_code) {
 
-	// parameter save request - LEDs go red after save and will go
+	// parameter save request - backlight goes red after save and will go
 	// off when the release event is registered.
 	case BK_EVENT_LONG_PRESS_2 | 0:
 		button_save_state();
-		for (i = 0; i < MAX_BUTTONS; i++) {
-			bk_set_key_led(i, BK_RED, 0);
-		}
+		bk_set_backlight_color(BK_BL_COLOR_RED);
 		break;
 	
+	// factory reset request - backlight goes cyan after save and will go
+	// off when the release event is registered.
 	case BK_EVENT_LONG_PRESS_3 | 0:
 		button_set_defaults();
 		button_save_state();
-		for (i = 0; i < MAX_BUTTONS; i++) {
-			bk_set_key_led(i, BK_CYAN, 0);
-		}
+		bk_set_backlight_color(BK_BL_COLOR_CYAN);
 		break;
 	
 	// next value for current button / mode?
@@ -694,7 +695,7 @@ button_config_loop(void)
 			mode = CONFIG_MODE_PARAMETER;
 			current_param = 0;
 			for (i = 1; i < MAX_BUTTONS; i++) {
-				bk_set_key_led(i, BK_BLUE, 0);
+				bk_set_key_led(i, BK_KEY_COLOR_BLUE, 0);
 			}
 			break;
 
@@ -703,7 +704,7 @@ button_config_loop(void)
 			mode = CONFIG_MODE_VALUE;
 			current_param_value = button_get_param(current_button, current_param);
 			for (i = 1; i < MAX_BUTTONS; i++) {
-				bk_set_key_led(i, BK_MAGENTA, 0);
+				bk_set_key_led(i, BK_KEY_COLOR_MAGENTA, 0);
 			}
 			break;
 
@@ -721,9 +722,9 @@ button_config_loop(void)
 	case CONFIG_MODE_BUTTON:
 		for (i = 0; i < MAX_BUTTONS; i++) {
 			if (i == current_button) {
-				bk_set_key_led(i, BK_WHITE, 0);
+				bk_set_key_led(i, BK_KEY_COLOR_WHITE, 0);
 			} else {
-				bk_set_key_led(i, BK_GREEN, 0);
+				bk_set_key_led(i, BK_KEY_COLOR_GREEN, 0);
 			}
 		}
 		break;
@@ -738,7 +739,7 @@ button_config_loop(void)
 		case PARAM_ON_COLOR:
 		case PARAM_OFF_COLOR:
 			if (current_param_value == 0) {
-				bk_set_key_led(0, BK_OFF, 0);
+				bk_set_key_led(0, BK_KEY_COLOR_OFF, 0);
 			} else {
 				bk_set_key_led(0, color_codes[current_param_value - 1], 0x55);
 			}
@@ -866,10 +867,16 @@ button_init(void)
 {
 	if (!button_load_state()) {
 		// EEPROM load failed, fast-blink key 0 red 
-		bk_set_key_led(0, BK_RED, 0x55);
+		bk_set_key_led(0, BK_KEY_COLOR_RED, 0x55);
 		// XXX delay here? watchdog...
 	}
+
+	// reset key and backlight intensity to defaults
+	bk_set_key_intensity(KEY_INTENSITY_NORMAL);
+	bk_set_backlight_intensity(BACKLIGHT_INTENSITY_NORMAL);
+	
 	system_mode = MODE_STANDBY;
+	//button_enter_mode(MODE_STANDBY);
 }
 
 /**
