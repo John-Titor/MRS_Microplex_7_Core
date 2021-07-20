@@ -1,6 +1,4 @@
-/*
- * hsd_calibration.h
- *
+/**
  * HSD calibration data is placed in EEPROM at the location that MRS
  * claim for it (0x14c8). The format is:
  * 

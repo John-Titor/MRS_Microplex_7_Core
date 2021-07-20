@@ -10,19 +10,34 @@ Missing functionality for parity:
   ☐ suppress CAN output in Standby
 
 Bugs:
-  ✘ 'smart' flashing doesn't play well with the backlight @cancelled (21-07-19 21:38)
-    - you can't turn a key "off" while the backlight is on, you just get the backlight color instead, so flashing magenta with a magenta backlight is just solid magenta
-    - so don't; use explicit key settings instead
+  ✔ 'smart' flashing doesn't play well with the backlight @done (21-07-20 00:03)
+    - you can't turn a key "off" while the backlight is on, you just get the backlight color instead
+    - keypad-managed blink is probably smarter
+    - use explicit key settings instead
 
 
 Enhancements:
+  ☐ do full keypad config at startup
   ☐ smart(er) port current monitoring
   ☐ pwm output
+  ☐ 'feature' bits in config
+  ☐ node ID in config for > 1 extender
+  ☐ use one of the EEPROM parameters so MRS config tool can edit features?
+  ☐ controller / extender 'feature'
+  ☐ limp mode
+    - detect keypad / remote management commands stopped sending
+    - configurable output state
+  ☐ wake-on-CAN for extenders
+  ☐ multiple keypads
 
 Test tool:
   ☐ console
+  ☐ interactive mode
+  ☐ script mode
   ☐ remote button press/release
-  ☐ status display
+  ☐ status display (outputs, button LEDs, backlight, etc)
+  ☐ EEPROM read/write
+  ☐ remote reset
 
 Questions:
   - How does multiple-switches-one-output work?

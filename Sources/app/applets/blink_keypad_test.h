@@ -1,8 +1,5 @@
-/*
- * blink_keypad_test.c
- *
- *  Created on: Jul 15, 2021
- *      Author: DrZip
+/**
+ * Interactive Blink keypad test.
  */
 
 #include <can_devices/blink_keypad.h>

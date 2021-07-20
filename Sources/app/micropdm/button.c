@@ -1,8 +1,5 @@
-/*
- * button.c
- *
- *  Created on: Jul 18, 2021
- *      Author: DrZip
+/**
+ * Keypad interface logic.
  */
 
 #include <IEE1.h>

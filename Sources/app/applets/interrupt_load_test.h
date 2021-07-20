@@ -1,6 +1,4 @@
-/*
- * interrupt_load_test.h
- *
+/**
  * Measure the cost of ADC interrupt processing (or anything 
  * else apart from the 1ms timer tick for that matter.)
  */

@@ -1,8 +1,5 @@
-/*
- * button.h
- *
- *  Created on: Jul 18, 2021
- *      Author: DrZip
+/**
+ * Keypad-related defines.
  */
 
 #ifndef BUTTON_H_

@@ -1,8 +1,5 @@
-/*
- * can.h
- *
- *  Created on: Jul 18, 2021
- *      Author: DrZip
+/**
+ * CAN interface definitions.
  */
 
 #ifndef CAN_H_

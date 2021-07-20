@@ -1,8 +1,5 @@
-/*
- * output.c
- *
- *  Created on: Jul 18, 2021
- *      Author: DrZip
+/**
+ * Local high/low-side driver outputs.
  */
 
 #include <core/io.h>

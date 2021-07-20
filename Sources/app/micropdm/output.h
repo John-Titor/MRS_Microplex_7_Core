@@ -1,8 +1,5 @@
-/*
- * output.h
- *
- *  Created on: Jul 18, 2021
- *      Author: DrZip
+/**
+ * Local output interfaces.
  */
 
 #ifndef OUTPUT_H_

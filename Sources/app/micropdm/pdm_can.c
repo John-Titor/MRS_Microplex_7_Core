@@ -1,8 +1,5 @@
-/*
- * pdm_can.c
- *
- *  Created on: Jul 18, 2021
- *      Author: DrZip
+/**
+ * CAN message handling and generation.
  */
 
 #include <AD1.h>
