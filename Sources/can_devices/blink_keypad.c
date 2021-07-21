@@ -379,7 +379,7 @@ bk_thread(struct pt *pt)
 }
 
 void
-bk_set_can_speed(uint16_t kbps)
+bk_set_can_speed(uint8_t kbps)
 {
 	uint8_t data[8] = { 0x2f, 0x10, 0x20 };
 	
